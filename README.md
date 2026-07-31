@@ -76,52 +76,52 @@ The research hypothesis is:
 
 ### Market-adjusted residual
 
-For stock \(i\):
+For stock $i$:
 
-\[
+$$
 \epsilon_{i,t}
 =
 r_{i,t}-\beta_i r_{\text{market},t}
-\]
+$$
 
 where:
 
-- \(r_{i,t}\) is the stock return;
-- \(r_{\text{market},t}\) is the equal-weight market-proxy return;
-- \(\beta_i\) is the stock's rolling sensitivity to that proxy;
-- \(\epsilon_{i,t}\) is the unexplained or residual return.
+- $r_{i,t}$ is the stock return;
+- $r_{\text{market},t}$ is the equal-weight market-proxy return;
+- $\beta_i$ is the stock's rolling sensitivity to that proxy;
+- $\epsilon_{i,t}$ is the unexplained or residual return.
 
 The residual displacement series is:
 
-\[
+$$
 S_{i,t}
 =
 \sum_{\tau}\epsilon_{i,\tau}
-\]
+$$
 
 ### Residual efficiency
 
-\[
+$$
 ER_L
 =
 \frac{|S_t-S_{t-L}|}
 {\sum_{j=1}^{L}|S_j-S_{j-1}|}
-\]
+$$
 
-- low \(ER\): substantial back-and-forth movement;
-- high \(ER\): persistent directional movement.
+- low $ER$: substantial back-and-forth movement;
+- high $ER$: persistent directional movement.
 
 ### Tradable amplitude
 
 Robust residual amplitude is:
 
-\[
+$$
 A_L=Q_{90}(S)-Q_{10}(S)
-\]
+$$
 
 The selector subtracts the estimated round-trip hurdle:
 
-\[
+$$
 A_L^{net}
 =
 A_L-
@@ -131,7 +131,7 @@ A_L-
 +\text{spread}
 +\text{execution haircut}
 \right)
-\]
+$$
 
 A ticker is rejected when residual amplitude is insufficient to exceed this
 hurdle.
@@ -146,7 +146,7 @@ reversal events are excluded.
 
 Eligible tickers receive an equal-rank composite:
 
-\[
+$$
 \text{Grid Score}
 =
 \frac{
@@ -154,7 +154,7 @@ Eligible tickers receive an equal-rank composite:
 +\operatorname{Rank}(A^{net})
 +\operatorname{Rank}(\text{Reversal Rate})
 }{3}
-\]
+$$
 
 Liquidity and severe-downtrend risk are hard gates rather than compensating
 score components.
@@ -165,23 +165,23 @@ and its top two stocks are frozen for the following month.
 
 ### Grid formulas
 
-For reference price \(C\), spacing \(g\), and level \(i\):
+For reference price $C$, spacing $g$, and level $i$:
 
-\[
+$$
 \text{Buy}_i
 =
 \frac{C}{(1+g)^i}
-\]
+$$
 
-\[
+$$
 \text{Target}_i
 =
 \frac{C}{(1+g)^{i-1}}
-\]
+$$
 
 Spacing is volatility adjusted:
 
-\[
+$$
 g
 =
 \operatorname{clip}
@@ -190,7 +190,7 @@ g
 0.8\%,
 2.5\%
 \right)
-\]
+$$
 
 The frozen optimized grid uses:
 
@@ -238,11 +238,11 @@ It is therefore labelled **diagnostic OOS**, not performance confirmation.
 
 For every rotation:
 
-\[
+$$
 \max(\text{feature date})
 <
 \min(\text{deployment date})
-\]
+$$
 
 The selector-development period is also disjoint from every trading-evaluation
 period. The generated split audit reports:
@@ -349,13 +349,13 @@ A limit order is considered matched only when:
 
 The account identity is:
 
-\[
+$$
 \text{NAV}
 =
 \text{available cash}
 +\text{pending sale cash}
 +\text{estimated net liquidation value of inventory}
-\]
+$$
 
 ### Selector development and optimization
 
@@ -473,13 +473,13 @@ The primary metrics are:
 
 The Sharpe ratio uses daily account returns:
 
-\[
+$$
 SR
 =
 \sqrt{252}
 \frac{\operatorname{mean}(r_t)}
 {\operatorname{std}(r_t)}
-\]
+$$
 
 No risk-free rate is subtracted in the current implementation. This must be
 considered when comparing the reported Sharpe ratio with studies using a
@@ -605,11 +605,11 @@ Every grid target was profitable, but every risk exit lost money.
 
 The average risk-exit loss was:
 
-\[
+$$
 \frac{271{,}214}{28{,}987}
 \approx
 9.36
-\]
+$$
 
 times one average grid-target profit.
 
