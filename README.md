@@ -76,62 +76,37 @@ The research hypothesis is:
 
 ### Market-adjusted residual
 
-For stock $i$:
+For each stock, the strategy estimates how sensitive its recent returns have
+been to the equal-weight market proxy. It then calculates the return that would
+normally be expected from that market exposure.
 
-$$
-\epsilon_{i,t}
-=
-r_{i,t}-\beta_i r_{\text{market},t}
-$$
+The **residual return** is the stock's actual return minus this expected
+market-driven return. A negative residual therefore means that the stock
+underperformed the proxy after allowing for its usual market sensitivity.
 
-where:
-
-- $r_{i,t}$ is the stock return;
-- $r_{\text{market},t}$ is the equal-weight market-proxy return;
-- $\beta_i$ is the stock's rolling sensitivity to that proxy;
-- $\epsilon_{i,t}$ is the unexplained or residual return.
-
-The residual displacement series is:
-
-$$
-S_{i,t}
-=
-\sum_{\tau}\epsilon_{i,\tau}
-$$
+The strategy adds these residual returns over time to form a **residual
+displacement series**. This series describes how far the stock has moved
+relative to the market proxy, rather than how far its raw price has moved.
 
 ### Residual efficiency
 
-$$
-ER_L
-=
-\frac{|S_t-S_{t-L}|}
-{\sum_{j=1}^{L}|S_j-S_{j-1}|}
-$$
+Residual efficiency compares the net distance travelled by the residual series
+over the selection window with the sum of all its daily movements.
 
-- low $ER$: substantial back-and-forth movement;
-- high $ER$: persistent directional movement.
+- A low value means that the residual travelled back and forth repeatedly,
+  which is more suitable for grid trading.
+- A high value means that most movement occurred in one direction, which is
+  more consistent with a trend.
 
 ### Tradable amplitude
 
-Robust residual amplitude is:
+Robust residual amplitude is the distance between the 90th percentile and the
+10th percentile of the residual displacement series. Using percentiles reduces
+the influence of one unusual price spike.
 
-$$
-A_L=Q_{90}(S)-Q_{10}(S)
-$$
-
-The selector subtracts the estimated round-trip hurdle:
-
-$$
-A_L^{net}
-=
-A_L-
-\left(
-\text{commission}
-+\text{sell tax}
-+\text{spread}
-+\text{execution haircut}
-\right)
-$$
+The selector subtracts the complete estimated round-trip trading hurdle from
+this amplitude. The hurdle includes buy and sell commission, sell tax, the
+bid/ask spread and the execution haircut.
 
 A ticker is rejected when residual amplitude is insufficient to exceed this
 hurdle.
@@ -144,17 +119,13 @@ reversal events are excluded.
 
 ### Ticker and sector score
 
-Eligible tickers receive an equal-rank composite:
+Eligible tickers are ranked on three equally weighted characteristics:
 
-$$
-\text{Grid Score}
-=
-\frac{
-\operatorname{Rank}(1-ER)
-+\operatorname{Rank}(A^{net})
-+\operatorname{Rank}(\text{Reversal Rate})
-}{3}
-$$
+1. more back-and-forth residual movement;
+2. greater residual amplitude after estimated trading costs;
+3. a higher observed rate of reversal toward the recent centre.
+
+The average of these three ranks becomes the ticker's grid-suitability score.
 
 Liquidity and severe-downtrend risk are hard gates rather than compensating
 score components.
@@ -163,34 +134,18 @@ A sector must contain at least two eligible tickers. Its score is the median
 score of its two highest-ranked eligible stocks. The highest-ranked sector
 and its top two stocks are frozen for the following month.
 
-### Grid formulas
+### Grid construction
 
-For reference price $C$, spacing $g$, and level $i$:
+The closing price observed at the monthly selection cutoff becomes the grid's
+reference price. Buy orders are placed at successively lower geometric levels:
+each new level is one grid-spacing percentage below the preceding level.
 
-$$
-\text{Buy}_i
-=
-\frac{C}{(1+g)^i}
-$$
+After a buy is filled, its sell target is the next grid level above its entry.
+For the first buy level, that target is the original reference price.
 
-$$
-\text{Target}_i
-=
-\frac{C}{(1+g)^{i-1}}
-$$
-
-Spacing is volatility adjusted:
-
-$$
-g
-=
-\operatorname{clip}
-\left(
-0.75\times ATR20\%,
-0.8\%,
-2.5\%
-\right)
-$$
+Grid spacing adapts to recent volatility. It starts at 75% of the stock's
+20-session average true range expressed as a percentage of price. Spacing is
+then constrained to a minimum of 0.8% and a maximum of 2.5%.
 
 The frozen optimized grid uses:
 
@@ -238,11 +193,8 @@ It is therefore labelled **diagnostic OOS**, not performance confirmation.
 
 For every rotation:
 
-$$
-\max(\text{feature date})
-<
-\min(\text{deployment date})
-$$
+> The latest observation used to select a ticker must occur before the first
+> session on which that selection is traded.
 
 The selector-development period is also disjoint from every trading-evaluation
 period. The generated split audit reports:
@@ -349,13 +301,9 @@ A limit order is considered matched only when:
 
 The account identity is:
 
-$$
-\text{NAV}
-=
-\text{available cash}
-+\text{pending sale cash}
-+\text{estimated net liquidation value of inventory}
-$$
+> Account value equals available cash, plus cash from unsettled sales, plus the
+> estimated after-cost liquidation value of all settled and unsettled stock
+> inventory.
 
 ### Selector development and optimization
 
@@ -473,13 +421,9 @@ The primary metrics are:
 
 The Sharpe ratio uses daily account returns:
 
-$$
-SR
-=
-\sqrt{252}
-\frac{\operatorname{mean}(r_t)}
-{\operatorname{std}(r_t)}
-$$
+> Calculate the average daily account return, divide it by the standard
+> deviation of daily returns, and annualize the result using 252 trading
+> sessions.
 
 No risk-free rate is subtracted in the current implementation. This must be
 considered when comparing the reported Sharpe ratio with studies using a
@@ -605,13 +549,10 @@ Every grid target was profitable, but every risk exit lost money.
 
 The average risk-exit loss was:
 
-$$
-\frac{271{,}214}{28{,}987}
-\approx
-9.36
-$$
+> VND 271,214 divided by VND 28,987 is approximately 9.36.
 
-times one average grid-target profit.
+Therefore, one average risk-exit loss was about 9.36 times one average
+grid-target profit.
 
 ### OOS loss by rotation
 
