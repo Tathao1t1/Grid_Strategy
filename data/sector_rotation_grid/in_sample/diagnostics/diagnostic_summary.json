@@ -1,0 +1,22 @@
+{
+  "account_reconciliation_difference_vnd": 0,
+  "commission_plus_tax_vnd": 1381383,
+  "cost_to_positive_gross_edge": 0.6906915,
+  "diagnostic_flags": [
+    "risk_exits_destroyed_value",
+    "scheduled_wind_down_destroyed_value"
+  ],
+  "execution_friction_vnd": 755000,
+  "gross_trading_pnl_vnd": 2000000,
+  "net_realized_pnl_vnd": 618617,
+  "pnl_by_exit_purpose_vnd": {
+    "grid_target": 3416272,
+    "risk_exit": -1002695,
+    "scheduled_wind_down": -1794960
+  },
+  "role": "in_sample",
+  "worst_rotation": "2023-04",
+  "worst_rotation_pnl_vnd": -986015,
+  "worst_ticker": "MBB",
+  "worst_ticker_pnl_vnd": -759965
+}

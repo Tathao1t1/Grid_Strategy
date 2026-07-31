@@ -1,0 +1,62 @@
+{
+  "boundaries": {
+    "in_sample_end": "2023-12-29",
+    "optimization_end": "2024-12-31",
+    "out_of_sample_end": "2025-06-30",
+    "selector_end": "2022-12-30"
+  },
+  "input_path": "data_algotradeDB_split.csv",
+  "input_sha256": "5fa014c90c729902c1eb9f9fc981aa4004dfb0ec58cc1bbea36c527d0c1f28ca",
+  "locked_period_opened_by_this_script": false,
+  "roles": {
+    "in_sample": {
+      "first_date": "2023-01-03",
+      "last_date": "2023-12-29",
+      "rows": 1992,
+      "sessions": 249
+    },
+    "locked_final_test": {
+      "first_date": "2025-07-14",
+      "last_date": "2026-07-16",
+      "rows": 2016,
+      "sessions": 252
+    },
+    "optimization": {
+      "first_date": "2024-01-02",
+      "last_date": "2024-12-31",
+      "rows": 2000,
+      "sessions": 250
+    },
+    "out_of_sample": {
+      "first_date": "2025-01-02",
+      "last_date": "2025-06-30",
+      "rows": 952,
+      "sessions": 119
+    },
+    "selector_development": {
+      "first_date": "2022-01-04",
+      "last_date": "2022-12-30",
+      "rows": 1992,
+      "sessions": 249
+    },
+    "unused_buffer": {
+      "first_date": "2025-07-01",
+      "last_date": "2025-07-11",
+      "rows": 72,
+      "sessions": 9
+    }
+  },
+  "schema_version": "sector_rotation_splits.v1",
+  "selector_is_disjoint_from_all_trading_evaluation": true,
+  "selector_trading_overlap_sessions": 0,
+  "tickers": [
+    "HPG",
+    "MBB",
+    "MWG",
+    "SSI",
+    "TCB",
+    "VCB",
+    "VND",
+    "VPB"
+  ]
+}

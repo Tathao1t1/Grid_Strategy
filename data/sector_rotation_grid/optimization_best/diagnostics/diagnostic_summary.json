@@ -1,0 +1,23 @@
+{
+  "account_reconciliation_difference_vnd": 0,
+  "commission_plus_tax_vnd": 2107936,
+  "cost_to_positive_gross_edge": 1.474081118881119,
+  "diagnostic_flags": [
+    "positive_gross_edge_smaller_than_fees_and_tax",
+    "risk_exits_destroyed_value",
+    "scheduled_wind_down_destroyed_value"
+  ],
+  "execution_friction_vnd": 910000,
+  "gross_trading_pnl_vnd": 1430000,
+  "net_realized_pnl_vnd": -677936,
+  "pnl_by_exit_purpose_vnd": {
+    "grid_target": 5020256,
+    "risk_exit": -4801767,
+    "scheduled_wind_down": -896425
+  },
+  "role": "optimization",
+  "worst_rotation": "2024-11",
+  "worst_rotation_pnl_vnd": -1841082,
+  "worst_ticker": "SSI",
+  "worst_ticker_pnl_vnd": -2045826
+}

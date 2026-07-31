@@ -1,0 +1,7 @@
+{
+  "best_net_pnl_vnd": -677936,
+  "configurations_tested": 12,
+  "interpretation": "Loss is parameter-robust within the pre-registered search space",
+  "profitable_configurations": 0,
+  "worst_net_pnl_vnd": -7184350
+}

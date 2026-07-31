@@ -1,0 +1,7 @@
+role,cutoff,maximum_feature_date,deployment_start,deployment_end,selection_deployment_overlap,selected_sector,selected_tickers,market_gate,market_gate_reasons,grid_levels_created,ending_equity_vnd,ending_open_quantity,ending_pending_cash_vnd,valid_flat_and_settled
+out_of_sample,2024-12-31,2024-12-31,2025-01-02,2025-01-24,False,banks,VPB|MBB,False,,24,997210537,0,0,True
+out_of_sample,2025-01-24,2025-01-24,2025-02-03,2025-02-28,False,banks,VPB|VCB,False,,24,997506427,0,0,True
+out_of_sample,2025-02-28,2025-02-28,2025-03-03,2025-03-31,False,banks,MBB|VPB,False,,24,997558378,0,0,True
+out_of_sample,2025-03-31,2025-03-31,2025-04-01,2025-04-29,False,banks,VCB|TCB,False,,24,987329572,0,0,True
+out_of_sample,2025-04-29,2025-04-29,2025-05-05,2025-05-30,False,,,True,market_latest_20_return_veto|market_60_drawdown_veto,0,987329572,0,0,True
+out_of_sample,2025-05-30,2025-05-30,2025-06-02,2025-06-30,False,,,True,market_60_drawdown_veto,0,987329572,0,0,True

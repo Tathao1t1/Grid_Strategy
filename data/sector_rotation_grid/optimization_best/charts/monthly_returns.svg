@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+<rect width="100%" height="100%" fill="#f5f8fc"/>
+<text x="100" y="38" font-family="Arial" font-size="25" font-weight="700" fill="#16233a">Optimization: Monthly Returns</text>
+<line x1="100" y1="262.5" x2="970" y2="262.5" stroke="#73829a" stroke-width="1.5"/>
+<rect x="113.8" y="262.5" width="45.0" height="1.0" fill="#00a88f" rx="3"/>
+<text x="136.2" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-01</text>
+<text x="136.2" y="255.5" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.00</text>
+<rect x="186.3" y="262.5" width="45.0" height="1.0" fill="#00a88f" rx="3"/>
+<text x="208.8" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-02</text>
+<text x="208.8" y="255.5" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.00</text>
+<rect x="258.8" y="100.0" width="45.0" height="162.5" fill="#00a88f" rx="3"/>
+<text x="281.2" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-03</text>
+<text x="281.2" y="93.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.22</text>
+<rect x="331.3" y="262.5" width="45.0" height="109.9" fill="#d94f5c" rx="3"/>
+<text x="353.8" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-04</text>
+<text x="353.8" y="388.4" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-0.15</text>
+<rect x="403.8" y="262.5" width="45.0" height="1.0" fill="#00a88f" rx="3"/>
+<text x="426.2" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-05</text>
+<text x="426.2" y="255.5" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.00</text>
+<rect x="476.3" y="262.5" width="45.0" height="1.0" fill="#00a88f" rx="3"/>
+<text x="498.8" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-06</text>
+<text x="498.8" y="255.5" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.00</text>
+<rect x="548.8" y="239.8" width="45.0" height="22.7" fill="#00a88f" rx="3"/>
+<text x="571.2" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-07</text>
+<text x="571.2" y="232.8" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.03</text>
+<rect x="621.3" y="262.5" width="45.0" height="46.2" fill="#d94f5c" rx="3"/>
+<text x="643.8" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-08</text>
+<text x="643.8" y="324.7" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-0.06</text>
+<rect x="693.8" y="189.5" width="45.0" height="73.0" fill="#00a88f" rx="3"/>
+<text x="716.2" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-09</text>
+<text x="716.2" y="182.5" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.10</text>
+<rect x="766.3" y="262.5" width="45.0" height="22.3" fill="#d94f5c" rx="3"/>
+<text x="788.8" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-10</text>
+<text x="788.8" y="300.8" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-0.03</text>
+<rect x="838.8" y="262.5" width="45.0" height="137.5" fill="#d94f5c" rx="3"/>
+<text x="861.2" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-11</text>
+<text x="861.2" y="416.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-0.18</text>
+<rect x="911.3" y="255.3" width="45.0" height="7.3" fill="#00a88f" rx="3"/>
+<text x="933.8" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2024-12</text>
+<text x="933.8" y="248.3" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.01</text>
+<text x="22" y="260.0" transform="rotate(-90 22 260.0)" font-family="Arial" font-size="13" fill="#52627a">Return (%)</text>
+</svg>

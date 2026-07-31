@@ -1,0 +1,55 @@
+{
+  "frozen_config_sha256": "96d02d50e5df00582c5eba186202570f7b49bcf3d74bfec36e4aec8c5286e9ab",
+  "locked_final_test_opened": false,
+  "loss_diagnostics": {
+    "account_reconciliation_difference_vnd": 0,
+    "commission_plus_tax_vnd": 850428,
+    "cost_to_positive_gross_edge": null,
+    "diagnostic_flags": [
+      "no_positive_gross_grid_edge",
+      "risk_exits_destroyed_value"
+    ],
+    "execution_friction_vnd": 505000,
+    "gross_trading_pnl_vnd": -11820000,
+    "net_realized_pnl_vnd": -12670428,
+    "pnl_by_exit_purpose_vnd": {
+      "grid_target": 347841,
+      "risk_exit": -13018269
+    },
+    "role": "out_of_sample",
+    "worst_rotation": "2025-04",
+    "worst_rotation_pnl_vnd": -10228806,
+    "worst_ticker": "VCB",
+    "worst_ticker_pnl_vnd": -6670830
+  },
+  "metrics": {
+    "account_reconciliation_difference_vnd": 0,
+    "active_return": -0.146601796,
+    "active_rotations": 4,
+    "all_rotations_flat_and_settled": true,
+    "annualized_sharpe": -2.328097714207841,
+    "benchmark_maximum_drawdown": -0.18968052553060366,
+    "benchmark_name": "equal_weight_bank_securities_proxy_gross",
+    "benchmark_return": 0.13393136800000005,
+    "commission_vnd": 642258,
+    "completed_sales": 60,
+    "ending_equity_vnd": 987329572,
+    "execution_friction_vnd": 505000,
+    "fills": 120,
+    "gross_trading_pnl_vnd": -11820000,
+    "maximum_drawdown": -0.012670427999999956,
+    "negative_realized_pnl_vnd": -13018269,
+    "net_realized_pnl_vnd": -12670428,
+    "net_return": -0.012670427999999956,
+    "positive_realized_pnl_vnd": 347841,
+    "profit_factor": 0.026719450950045662,
+    "rotations": 6,
+    "selection_deployment_overlap_count": 0,
+    "sell_tax_vnd": 208170,
+    "starting_capital_vnd": 1000000000
+  },
+  "oos_opened_once": true,
+  "opened_after_failed_development_gate": true,
+  "opening_purpose": "loss_diagnosis_not_performance_confirmation",
+  "trial_id": "SECTOR-ROTATION-GRID-V1"
+}

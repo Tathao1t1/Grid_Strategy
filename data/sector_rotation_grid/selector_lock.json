@@ -1,0 +1,12 @@
+{
+  "candidate_horizons": [
+    20,
+    40,
+    60
+  ],
+  "selected_horizon": 20,
+  "selection_rule": "equal_rank_residual_efficiency_net_amplitude_reversal",
+  "selector_development_last_date": "2022-12-30",
+  "selector_development_role": "selector_development",
+  "trial_id": "SECTOR-ROTATION-GRID-V1"
+}

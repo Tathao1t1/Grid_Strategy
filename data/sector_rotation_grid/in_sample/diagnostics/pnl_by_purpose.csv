@@ -1,0 +1,4 @@
+purpose,completed_sales,winning_sales,losing_sales,net_pnl_vnd,average_pnl_vnd,profit_factor
+grid_target,33,33,0,3416272,103523.39393939394,infinity
+risk_exit,30,0,30,-1002695,-33423.166666666664,0.0
+scheduled_wind_down,20,0,20,-1794960,-89748,0.0

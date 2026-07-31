@@ -1,0 +1,59 @@
+{
+  "benchmark": "equal_weight_bank_securities_proxy_gross",
+  "development_data_ends": "2024-12-31",
+  "development_gate": {
+    "oos_authorized": false,
+    "passed": false,
+    "requirements": {
+      "minimum_active_optimization_rotations": 6,
+      "optimization_profit_factor_above_one": true,
+      "positive_in_sample_return": true,
+      "positive_optimization_return": true,
+      "zero_account_reconciliation_difference_vnd": true
+    }
+  },
+  "execution_policy": {
+    "board_lot": 100,
+    "execution_haircut_bps": 5,
+    "limit_penetration_ticks": 1,
+    "maximum_minute_participation": 0.05,
+    "maximum_spread_bps": 40.0,
+    "settlement_sessions": 2,
+    "settlement_time": "13:00:00"
+  },
+  "fees": {
+    "commission_rate": 0.0015,
+    "sell_tax_rate": 0.001
+  },
+  "frozen_config_sha256": "96d02d50e5df00582c5eba186202570f7b49bcf3d74bfec36e4aec8c5286e9ab",
+  "grid_config": {
+    "allocation_per_ticker": 0.45,
+    "levels": 4,
+    "maximum_cells_per_level": 3,
+    "maximum_selected_tickers": 2,
+    "maximum_spacing": 0.025,
+    "minimum_spacing": 0.008,
+    "spacing_atr_multiplier": 0.75,
+    "stop_buy_sessions_before_end": 9,
+    "wind_down_sessions_before_end": 5
+  },
+  "initial_capital_vnd": 1000000000,
+  "internal_oos_ends": "2025-06-30",
+  "internal_oos_starts": "2025-01-02",
+  "locked_final_test_opened": false,
+  "schema_version": "sector_rotation_grid.v1",
+  "sectors": [
+    "banks",
+    "securities"
+  ],
+  "selector_horizon": 20,
+  "tickers": [
+    "MBB",
+    "SSI",
+    "TCB",
+    "VCB",
+    "VND",
+    "VPB"
+  ],
+  "trial_id": "SECTOR-ROTATION-GRID-V1"
+}

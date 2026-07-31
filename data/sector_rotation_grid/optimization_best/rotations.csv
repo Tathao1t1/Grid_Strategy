@@ -1,0 +1,13 @@
+role,cutoff,maximum_feature_date,deployment_start,deployment_end,selection_deployment_overlap,selected_sector,selected_tickers,market_gate,market_gate_reasons,grid_levels_created,ending_equity_vnd,ending_open_quantity,ending_pending_cash_vnd,valid_flat_and_settled
+optimization,2023-12-29,2023-12-29,2024-01-02,2024-01-31,False,,,True,market_60_drawdown_veto,0,1000000000,0,0,True
+optimization,2024-01-31,2024-01-31,2024-02-01,2024-02-29,False,banks,VCB|TCB,False,,24,1000000000,0,0,True
+optimization,2024-02-29,2024-02-29,2024-03-01,2024-03-29,False,banks,MBB|VCB,False,,24,1002174608,0,0,True
+optimization,2024-03-29,2024-03-29,2024-04-01,2024-04-26,False,securities,SSI|VND,False,,24,1000701221,0,0,True
+optimization,2024-04-26,2024-04-26,2024-05-02,2024-05-31,False,,,True,market_latest_20_return_veto,0,1000701221,0,0,True
+optimization,2024-05-31,2024-05-31,2024-06-03,2024-06-28,False,securities,VND|SSI,False,,24,1000701221,0,0,True
+optimization,2024-06-28,2024-06-28,2024-07-01,2024-07-31,False,banks,TCB|MBB,False,,24,1001005715,0,0,True
+optimization,2024-07-31,2024-07-31,2024-08-01,2024-08-30,False,banks,TCB|VCB,False,,24,1000386875,0,0,True
+optimization,2024-08-30,2024-08-30,2024-09-04,2024-09-30,False,banks,TCB|VCB,False,,24,1001364548,0,0,True
+optimization,2024-09-30,2024-09-30,2024-10-01,2024-10-31,False,securities,SSI|VND,False,,24,1001066069,0,0,True
+optimization,2024-10-31,2024-10-31,2024-11-01,2024-11-29,False,securities,VND|SSI,False,,24,999224987,0,0,True
+optimization,2024-11-29,2024-11-29,2024-12-02,2024-12-31,False,banks,VCB|VPB,False,,24,999322064,0,0,True

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+<rect width="100%" height="100%" fill="#f5f8fc"/>
+<text x="100" y="38" font-family="Arial" font-size="25" font-weight="700" fill="#16233a">Optimization: Net P&amp;L by Ticker</text>
+<line x1="100" y1="274.4" x2="970" y2="274.4" stroke="#73829a" stroke-width="1.5"/>
+<rect x="127.5" y="224.8" width="89.9" height="49.6" fill="#00a88f" rx="3"/>
+<text x="172.5" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">MBB</text>
+<text x="172.5" y="217.8" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.81</text>
+<rect x="272.6" y="274.4" width="89.9" height="125.6" fill="#d94f5c" rx="3"/>
+<text x="317.5" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">SSI</text>
+<text x="317.5" y="416.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-2.05</text>
+<rect x="417.6" y="274.4" width="89.9" height="49.8" fill="#d94f5c" rx="3"/>
+<text x="462.5" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">TCB</text>
+<text x="462.5" y="340.3" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-0.81</text>
+<rect x="562.5" y="100.0" width="89.9" height="174.4" fill="#00a88f" rx="3"/>
+<text x="607.5" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">VCB</text>
+<text x="607.5" y="93.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">2.84</text>
+<rect x="707.5" y="274.4" width="89.9" height="96.2" fill="#d94f5c" rx="3"/>
+<text x="752.5" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">VND</text>
+<text x="752.5" y="386.6" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-1.57</text>
+<rect x="852.5" y="268.5" width="89.9" height="6.0" fill="#00a88f" rx="3"/>
+<text x="897.5" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">VPB</text>
+<text x="897.5" y="261.5" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">0.10</text>
+<text x="22" y="260.0" transform="rotate(-90 22 260.0)" font-family="Arial" font-size="13" fill="#52627a">VND million</text>
+</svg>

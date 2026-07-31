@@ -1,0 +1,21 @@
+{
+  "account_reconciliation_difference_vnd": 0,
+  "commission_plus_tax_vnd": 850428,
+  "cost_to_positive_gross_edge": null,
+  "diagnostic_flags": [
+    "no_positive_gross_grid_edge",
+    "risk_exits_destroyed_value"
+  ],
+  "execution_friction_vnd": 505000,
+  "gross_trading_pnl_vnd": -11820000,
+  "net_realized_pnl_vnd": -12670428,
+  "pnl_by_exit_purpose_vnd": {
+    "grid_target": 347841,
+    "risk_exit": -13018269
+  },
+  "role": "out_of_sample",
+  "worst_rotation": "2025-04",
+  "worst_rotation_pnl_vnd": -10228806,
+  "worst_ticker": "VCB",
+  "worst_ticker_pnl_vnd": -6670830
+}
