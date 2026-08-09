@@ -1,7 +1,6 @@
-# Leakage-Controlled Grid Trading on Vietnamese Stocks
+#  Grid Trading on Vietnamese Stocks
 
-This repository tests a long-only grid strategy on six liquid HSX stocks:
-MBB, SSI, TCB, VCB, VND and VPB. It uses daily data for causal selection and
+This repository tests a long-only grid strategy on Vietnamese stock market. It uses daily data for causal selection and
 grid construction, then minute bid/ask and matched-trade data for execution.
 
 The final out-of-sample (OOS) test has now been opened once. It covers exactly
@@ -173,23 +172,7 @@ per level.
 
 ### Final OOS controls
 
-| Check | Result |
-|---|---:|
-| Frozen configuration hash | `96d02d50e5df00582c5eba186202570f7b49bcf3d74bfec36e4aec8c5286e9ab` |
-| Final sessions | 252 |
-| First / last session | 2025-07-14 / 2026-07-16 |
-| Configuration changed after freeze | No |
-| Selection/deployment overlaps | 0 |
-| Ending inventory and pending cash | 0 |
-| Account reconciliation difference | VND 0 |
-| Completed sales / total fills | 69 / 138 |
-| Active monthly deployments | 6 of 13 |
 
-`frozen_config.json` still contains `locked_final_test_opened: false` because
-that file is an immutable pre-OOS artifact covered by the frozen hash. The
-current opened state is recorded separately in `final_oos_opening_manifest.json`
-and `final_oos_summary.json` so the frozen file is not rewritten after seeing
-the result.
 
 The final OOS started with VND 1,000,000,000 and ended with VND 994,344,412.
 Maximum strategy drawdown was 0.928%, versus 27.283% for the gross proxy.
