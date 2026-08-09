@@ -1,0 +1,14 @@
+role,cutoff,maximum_feature_date,deployment_start,deployment_end,selection_deployment_overlap,selected_sector,selected_tickers,market_gate,market_gate_reasons,grid_levels_created,ending_equity_vnd,ending_open_quantity,ending_pending_cash_vnd,valid_flat_and_settled
+locked_final_test,2025-07-11,2025-07-11,2025-07-14,2025-07-31,False,securities,VND|SSI,False,,24,1000000000,0,0,True
+locked_final_test,2025-07-31,2025-07-31,2025-08-01,2025-08-29,False,securities,SSI|VND,False,,24,1002083221,0,0,True
+locked_final_test,2025-08-29,2025-08-29,2025-09-03,2025-09-30,False,banks,VPB|MBB,False,,24,1001113393,0,0,True
+locked_final_test,2025-09-30,2025-09-30,2025-10-01,2025-10-31,False,,,True,market_latest_20_return_veto,0,1001113393,0,0,True
+locked_final_test,2025-10-31,2025-10-31,2025-11-03,2025-11-28,False,,,True,market_latest_20_return_veto|market_60_drawdown_veto,0,1001113393,0,0,True
+locked_final_test,2025-11-28,2025-11-28,2025-12-01,2025-12-31,False,,,True,market_60_drawdown_veto,0,1001113393,0,0,True
+locked_final_test,2025-12-31,2025-12-31,2026-01-05,2026-01-30,False,,,True,market_60_drawdown_veto,0,1001113393,0,0,True
+locked_final_test,2026-01-30,2026-01-30,2026-02-02,2026-02-27,False,banks,TCB|VCB,False,,24,998530531,0,0,True
+locked_final_test,2026-02-27,2026-02-27,2026-03-02,2026-03-31,False,banks,MBB|TCB,False,,24,994344412,0,0,True
+locked_final_test,2026-03-31,2026-03-31,2026-04-01,2026-04-29,False,,,True,market_latest_20_return_veto|market_60_drawdown_veto,0,994344412,0,0,True
+locked_final_test,2026-04-29,2026-04-29,2026-05-04,2026-05-29,False,,,True,market_60_drawdown_veto,0,994344412,0,0,True
+locked_final_test,2026-05-29,2026-05-29,2026-06-01,2026-06-30,False,,,True,market_60_drawdown_veto,0,994344412,0,0,True
+locked_final_test,2026-06-30,2026-06-30,2026-07-01,2026-07-16,False,securities,VND|SSI,False,,24,994344412,0,0,True

@@ -7,9 +7,9 @@ Research sequence
 2. Run the baseline in-sample strategy on 2023.
 3. Optimize a compact grid parameter set on 2024 only.
 4. Seal the configuration.
-5. Open the January-June 2025 internal OOS block in a separate command.
-
-The July 2025 onward ``final_test`` is never parsed by this module.
+5. Open the January-June 2025 internal diagnostic OOS block separately.
+6. Open the July 2025-July 2026 final OOS only through an explicit, hashed,
+   one-time command after every rule and parameter has been frozen.
 
 The repository does not contain an official VN-Index series.  Until one is
 provided, market adjustment and chart benchmarking use an explicitly labelled
@@ -228,6 +228,103 @@ def canonical_hash(value: object) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def verified_frozen_configuration(
+    output_root: Path,
+    confirmation_hash: str,
+) -> tuple[dict[str, object], str]:
+    frozen_path = output_root / "frozen_config.json"
+    stored = json.loads(frozen_path.read_text(encoding="utf-8"))
+    expected = str(stored.pop("frozen_config_sha256"))
+    observed = canonical_hash(stored)
+    if expected != observed or confirmation_hash != expected:
+        raise RuntimeError("Frozen configuration confirmation failed")
+    return stored, expected
+
+
+def authorize_final_oos_opening(
+    output_root: Path,
+    confirmation_hash: str,
+    daily_path: Path,
+    assignments_path: Path,
+    *,
+    allow_failed_gate: bool,
+) -> dict[str, object]:
+    payload, expected = verified_frozen_configuration(
+        output_root, confirmation_hash
+    )
+    if not bool(payload["development_gate"]["passed"]) and not allow_failed_gate:  # type: ignore[index]
+        raise RuntimeError(
+            "Development gate failed; explicit final-OOS diagnostic "
+            "authorization is required"
+        )
+    final_dir = output_root / "final_out_of_sample"
+    summary_path = output_root / "final_oos_summary.json"
+    opening_path = output_root / "final_oos_opening_manifest.json"
+    if final_dir.exists() or summary_path.exists() or opening_path.exists():
+        raise RuntimeError(
+            "Final OOS has already been opened or started; refusing to rerun"
+        )
+
+    final_dates: list[date] = []
+    with assignments_path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            if row["research_role"] == "locked_final_test":
+                final_dates.append(date.fromisoformat(row["trading_date"]))
+    if (
+        len(final_dates) != 252
+        or min(final_dates, default=None) != date(2025, 7, 14)
+        or max(final_dates, default=None) != date(2026, 7, 16)
+    ):
+        raise RuntimeError(
+            "Final-OOS assignment must contain exactly 252 sessions from "
+            "2025-07-14 through 2026-07-16"
+        )
+
+    project_root = Path(__file__).resolve().parent
+    manifest: dict[str, object] = {
+        "status": "opened_for_one_time_execution",
+        "trial_id": TRIAL_ID,
+        "frozen_config_sha256": expected,
+        "final_oos_start": "2025-07-14",
+        "final_oos_end": "2026-07-16",
+        "final_oos_sessions": 252,
+        "development_gate_passed": bool(
+            payload["development_gate"]["passed"]  # type: ignore[index]
+        ),
+        "opening_purpose": (
+            "final_performance_confirmation"
+            if bool(payload["development_gate"]["passed"])  # type: ignore[index]
+            else "final_diagnostic_evaluation_of_rejected_model"
+        ),
+        "hash_verified_before_final_numeric_load": True,
+        "source_sha256": {
+            "sector_rotation_grid.py": sha256_file(Path(__file__)),
+            "grid_platform.py": sha256_file(project_root / "grid_platform.py"),
+            "create_sector_rotation_splits.py": sha256_file(
+                project_root / "create_sector_rotation_splits.py"
+            ),
+        },
+        "input_sha256": {
+            "daily": sha256_file(daily_path),
+            "assignments": sha256_file(assignments_path),
+        },
+    }
+    output_root.mkdir(parents=True, exist_ok=True)
+    opening_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return manifest
+
+
 def quantile(values: Sequence[float], probability: float) -> float:
     if not values:
         return 0.0
@@ -342,11 +439,14 @@ class DataStore:
         assignments_path: Path,
         spread_cache_path: Path,
         minute_dir: Path,
+        *,
+        unlock_final_test: bool = False,
     ) -> None:
         self.daily_path = daily_path
         self.assignments_path = assignments_path
         self.spread_cache_path = spread_cache_path
         self.minute_dir = minute_dir
+        self.unlock_final_test = unlock_final_test
         self.role_by_date = self._load_assignments()
         self.bars_by_ticker, self.bars_by_date = self._load_daily()
         self.calendar = tuple(sorted(self.bars_by_date))
@@ -377,8 +477,12 @@ class DataStore:
                     continue
                 trading_date = date.fromisoformat(row["datetime"])
                 role = self.role_by_date.get(trading_date)
-                # Numeric final-test values are deliberately never parsed.
-                if role == "locked_final_test" or role is None:
+                # Final-test values remain unavailable unless the dedicated
+                # final-OOS command has already verified the frozen hash.
+                if role is None or (
+                    role == "locked_final_test"
+                    and not self.unlock_final_test
+                ):
                     continue
                 bar = DailyBar(
                     trading_date=trading_date,
@@ -420,9 +524,6 @@ class DataStore:
         observations: dict[tuple[str, date], list[float]] = defaultdict(list)
         allowed_dates = set(self.calendar)
         for path in sorted(self.minute_dir.glob("minute_bars_*.csv.gz")):
-            period = path.name.removeprefix("minute_bars_")[:7]
-            if period > "2025_06":
-                continue
             with gzip.open(
                 path, "rt", newline="", encoding="utf-8"
             ) as handle:
@@ -982,7 +1083,12 @@ def simulate_role(
 ) -> StrategyResult:
     config.validate()
     role_dates = data.role_dates(role)
-    if role not in {"in_sample", "optimization", "out_of_sample"}:
+    if role not in {
+        "in_sample",
+        "optimization",
+        "out_of_sample",
+        "locked_final_test",
+    }:
         raise ValueError(f"Role cannot be traded: {role}")
     if not role_dates:
         raise ValueError(f"No dates for role {role}")
@@ -994,10 +1100,14 @@ def simulate_role(
         limit_penetration_ticks=1,
         allow_partial_fills=False,
     )
-    calendar_dates = tuple(
-        value
-        for value in data.calendar
-        if value <= data.role_dates("unused_buffer")[-1]
+    calendar_dates = (
+        data.calendar
+        if role == "locked_final_test"
+        else tuple(
+            value
+            for value in data.calendar
+            if value <= data.role_dates("unused_buffer")[-1]
+        )
     )
     broker = BacktestBroker(
         INITIAL_CAPITAL_VND,
@@ -2007,12 +2117,9 @@ def oos_run(
     *,
     allow_failed_gate_for_diagnosis: bool = False,
 ) -> StrategyResult:
-    frozen_path = output_root / "frozen_config.json"
-    payload = json.loads(frozen_path.read_text(encoding="utf-8"))
-    expected = payload.pop("frozen_config_sha256")
-    observed = canonical_hash(payload)
-    if expected != observed or confirmation_hash != expected:
-        raise RuntimeError("Frozen configuration confirmation failed")
+    payload, expected = verified_frozen_configuration(
+        output_root, confirmation_hash
+    )
     if (
         not payload["development_gate"]["oos_authorized"]
         and not allow_failed_gate_for_diagnosis
@@ -2057,11 +2164,92 @@ def oos_run(
     return result
 
 
+def final_oos_run(
+    data: DataStore,
+    output_root: Path,
+    confirmation_hash: str,
+    opening_manifest: Mapping[str, object],
+) -> StrategyResult:
+    payload, expected = verified_frozen_configuration(
+        output_root, confirmation_hash
+    )
+    if opening_manifest.get("frozen_config_sha256") != expected:
+        raise RuntimeError("Final-OOS opening manifest hash mismatch")
+    if not data.unlock_final_test:
+        raise RuntimeError("Final-OOS data were not explicitly unlocked")
+    final_dates = data.role_dates("locked_final_test")
+    if (
+        len(final_dates) != 252
+        or final_dates[0] != date(2025, 7, 14)
+        or final_dates[-1] != date(2026, 7, 16)
+    ):
+        raise RuntimeError(
+            "Loaded final OOS must contain exactly 252 sessions from "
+            "2025-07-14 through 2026-07-16"
+        )
+
+    final_dir = output_root / "final_out_of_sample"
+    staging_dir = output_root / ".final_out_of_sample_staging"
+    summary_path = output_root / "final_oos_summary.json"
+    if final_dir.exists() or staging_dir.exists() or summary_path.exists():
+        raise RuntimeError("Final OOS output already exists; refusing to rerun")
+
+    config = GridConfig(**payload["grid_config"])  # type: ignore[arg-type]
+    result = simulate_role(
+        data,
+        "locked_final_test",
+        int(payload["selector_horizon"]),
+        config,
+    )
+    if (
+        len(result.daily) != 252
+        or result.daily[0]["trading_date"] != "2025-07-14"
+        or result.daily[-1]["trading_date"] != "2026-07-16"
+    ):
+        raise RuntimeError("Final-OOS result dates do not match the lock")
+    if int(result.metrics["selection_deployment_overlap_count"]) != 0:
+        raise RuntimeError("Final-OOS selection/deployment overlap detected")
+    if not bool(result.metrics["all_rotations_flat_and_settled"]):
+        raise RuntimeError("Final-OOS portfolio did not finish flat and settled")
+    if int(result.metrics["account_reconciliation_difference_vnd"]) != 0:
+        raise RuntimeError("Final-OOS account reconciliation failed")
+
+    save_result(staging_dir, result)
+    generate_charts(result, staging_dir / "charts")
+    diagnostic_summary = write_loss_diagnostics(result, staging_dir)
+    staging_dir.rename(final_dir)
+
+    summary: dict[str, object] = {
+        "trial_id": TRIAL_ID,
+        "frozen_config_sha256": expected,
+        "final_oos_opened_once": True,
+        "final_oos_start": "2025-07-14",
+        "final_oos_end": "2026-07-16",
+        "final_oos_sessions": 252,
+        "development_gate_passed": bool(
+            payload["development_gate"]["passed"]  # type: ignore[index]
+        ),
+        "opening_purpose": opening_manifest["opening_purpose"],
+        "configuration_changed_after_freeze": False,
+        "opening_manifest_sha256": canonical_hash(opening_manifest),
+        "spread_cache_sha256": sha256_file(data.spread_cache_path),
+        "metrics": result.metrics,
+        "loss_diagnostics": diagnostic_summary,
+    }
+    summary_path.write_text(
+        json.dumps(summary, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return result
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Run leakage-controlled sector-rotation grid research."
     )
-    parser.add_argument("stage", choices=("develop", "oos"))
+    parser.add_argument(
+        "stage", choices=("develop", "oos", "final-oos")
+    )
     parser.add_argument(
         "--daily",
         type=Path,
@@ -2087,6 +2275,14 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--final-spread-cache",
+        type=Path,
+        default=Path(
+            "data/sector_rotation_grid/cache/"
+            "daily_spreads_through_final_oos.csv"
+        ),
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=Path("data/sector_rotation_grid"),
@@ -2104,11 +2300,45 @@ def build_parser() -> argparse.ArgumentParser:
             "the development performance gate failed."
         ),
     )
+    parser.add_argument(
+        "--final-oos-after-failed-gate",
+        action="store_true",
+        help=(
+            "Explicitly open the final holdout as a diagnostic evaluation "
+            "of the already-rejected frozen model."
+        ),
+    )
     return parser
 
 
 def main() -> None:
     args = build_parser().parse_args()
+    if args.stage == "final-oos":
+        if not args.confirm_frozen_config:
+            raise SystemExit("--confirm-frozen-config is required")
+        opening_manifest = authorize_final_oos_opening(
+            args.output,
+            args.confirm_frozen_config,
+            args.daily,
+            args.assignments,
+            allow_failed_gate=args.final_oos_after_failed_gate,
+        )
+        data = DataStore(
+            args.daily,
+            args.assignments,
+            args.final_spread_cache,
+            args.minute_dir,
+            unlock_final_test=True,
+        )
+        result = final_oos_run(
+            data,
+            args.output,
+            args.confirm_frozen_config,
+            opening_manifest,
+        )
+        print(json.dumps(result.metrics, indent=2, sort_keys=True))
+        return
+
     data = DataStore(
         args.daily,
         args.assignments,

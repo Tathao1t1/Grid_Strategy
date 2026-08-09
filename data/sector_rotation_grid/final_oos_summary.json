@@ -1,0 +1,60 @@
+{
+  "configuration_changed_after_freeze": false,
+  "development_gate_passed": false,
+  "final_oos_end": "2026-07-16",
+  "final_oos_opened_once": true,
+  "final_oos_sessions": 252,
+  "final_oos_start": "2025-07-14",
+  "frozen_config_sha256": "96d02d50e5df00582c5eba186202570f7b49bcf3d74bfec36e4aec8c5286e9ab",
+  "loss_diagnostics": {
+    "account_reconciliation_difference_vnd": 0,
+    "commission_plus_tax_vnd": 960588,
+    "cost_to_positive_gross_edge": null,
+    "diagnostic_flags": [
+      "no_positive_gross_grid_edge",
+      "risk_exits_destroyed_value"
+    ],
+    "execution_friction_vnd": 615000,
+    "gross_trading_pnl_vnd": -4695000,
+    "net_realized_pnl_vnd": -5655588,
+    "pnl_by_exit_purpose_vnd": {
+      "grid_target": 2468073,
+      "risk_exit": -8123661
+    },
+    "role": "locked_final_test",
+    "worst_rotation": "2026-03",
+    "worst_rotation_pnl_vnd": -4186119,
+    "worst_ticker": "TCB",
+    "worst_ticker_pnl_vnd": -3093144
+  },
+  "metrics": {
+    "account_reconciliation_difference_vnd": 0,
+    "active_return": -0.08568952800000007,
+    "active_rotations": 6,
+    "all_rotations_flat_and_settled": true,
+    "annualized_sharpe": -1.2033856398114553,
+    "benchmark_maximum_drawdown": -0.2728309013759106,
+    "benchmark_name": "equal_weight_bank_securities_proxy_gross",
+    "benchmark_return": 0.08003394000000008,
+    "commission_vnd": 722208,
+    "completed_sales": 69,
+    "ending_equity_vnd": 994344412,
+    "execution_friction_vnd": 615000,
+    "fills": 138,
+    "gross_trading_pnl_vnd": -4695000,
+    "maximum_drawdown": -0.009277709042001203,
+    "negative_realized_pnl_vnd": -8567532,
+    "net_realized_pnl_vnd": -5655588,
+    "net_return": -0.005655587999999989,
+    "positive_realized_pnl_vnd": 2911944,
+    "profit_factor": 0.33988131004354577,
+    "rotations": 13,
+    "selection_deployment_overlap_count": 0,
+    "sell_tax_vnd": 238380,
+    "starting_capital_vnd": 1000000000
+  },
+  "opening_manifest_sha256": "cc426a7306b120fd68121851a85f0be8be3fddf366838d6f29d5f710ceeb7c0b",
+  "opening_purpose": "final_diagnostic_evaluation_of_rejected_model",
+  "spread_cache_sha256": "da99fca4a0e04e318f70a689afc9d6d51a63054fece0cd24f9ecbf9b2b2769f3",
+  "trial_id": "SECTOR-ROTATION-GRID-V1"
+}

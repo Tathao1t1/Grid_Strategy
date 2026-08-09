@@ -1,0 +1,21 @@
+{
+  "account_reconciliation_difference_vnd": 0,
+  "commission_plus_tax_vnd": 960588,
+  "cost_to_positive_gross_edge": null,
+  "diagnostic_flags": [
+    "no_positive_gross_grid_edge",
+    "risk_exits_destroyed_value"
+  ],
+  "execution_friction_vnd": 615000,
+  "gross_trading_pnl_vnd": -4695000,
+  "net_realized_pnl_vnd": -5655588,
+  "pnl_by_exit_purpose_vnd": {
+    "grid_target": 2468073,
+    "risk_exit": -8123661
+  },
+  "role": "locked_final_test",
+  "worst_rotation": "2026-03",
+  "worst_rotation_pnl_vnd": -4186119,
+  "worst_ticker": "TCB",
+  "worst_ticker_pnl_vnd": -3093144
+}

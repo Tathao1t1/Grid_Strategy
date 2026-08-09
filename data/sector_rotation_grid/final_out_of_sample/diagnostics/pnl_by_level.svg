@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520">
+<rect width="100%" height="100%" fill="#f5f8fc"/>
+<text x="100" y="38" font-family="Arial" font-size="25" font-weight="700" fill="#16233a">Locked Final Test: Net P&amp;L by Level</text>
+<line x1="100" y1="100.0" x2="970" y2="100.0" stroke="#73829a" stroke-width="1.5"/>
+<rect x="141.3" y="100.0" width="134.8" height="300.0" fill="#d94f5c" rx="3"/>
+<text x="208.8" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">1</text>
+<text x="208.8" y="416.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-2.46</text>
+<rect x="358.8" y="100.0" width="134.8" height="173.6" fill="#d94f5c" rx="3"/>
+<text x="426.2" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">2</text>
+<text x="426.2" y="289.6" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-1.43</text>
+<rect x="576.3" y="100.0" width="134.8" height="198.2" fill="#d94f5c" rx="3"/>
+<text x="643.8" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">3</text>
+<text x="643.8" y="314.2" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-1.63</text>
+<rect x="793.8" y="100.0" width="134.8" height="17.0" fill="#d94f5c" rx="3"/>
+<text x="861.2" y="465" text-anchor="middle" font-family="Arial" font-size="12" fill="#33445d">4</text>
+<text x="861.2" y="133.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#33445d">-0.14</text>
+<text x="22" y="260.0" transform="rotate(-90 22 260.0)" font-family="Arial" font-size="13" fill="#52627a">VND million</text>
+</svg>

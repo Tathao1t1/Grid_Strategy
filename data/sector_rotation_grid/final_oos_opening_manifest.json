@@ -1,0 +1,20 @@
+{
+  "development_gate_passed": false,
+  "final_oos_end": "2026-07-16",
+  "final_oos_sessions": 252,
+  "final_oos_start": "2025-07-14",
+  "frozen_config_sha256": "96d02d50e5df00582c5eba186202570f7b49bcf3d74bfec36e4aec8c5286e9ab",
+  "hash_verified_before_final_numeric_load": true,
+  "input_sha256": {
+    "assignments": "a0ef10ea89e1fd500924a48297ae0b99c104b0a0315e0ac6ba18649fbe8a7818",
+    "daily": "5fa014c90c729902c1eb9f9fc981aa4004dfb0ec58cc1bbea36c527d0c1f28ca"
+  },
+  "opening_purpose": "final_diagnostic_evaluation_of_rejected_model",
+  "source_sha256": {
+    "create_sector_rotation_splits.py": "eb35f8d45f169890f3f1a8f90fb607f9a8a3bb11384e273a26236e9d59612967",
+    "grid_platform.py": "1a752b2685ecd304fbfc1d384954526b76adef3670b1f87d8e6a79f62a9a63ae",
+    "sector_rotation_grid.py": "6fe7b2b0762393e06fee1f7180b981f38edafc5e9f290ea38a5e7bc1716f6a92"
+  },
+  "status": "opened_for_one_time_execution",
+  "trial_id": "SECTOR-ROTATION-GRID-V1"
+}
