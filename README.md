@@ -74,48 +74,8 @@ The research hypothesis is:
 > risk and adequate liquidity will generate positive grid expectancy during
 > the next monthly deployment period.
 
-### Market-adjusted residual
 
-For each stock, the strategy estimates how sensitive its recent returns have
-been to the equal-weight market proxy. It then calculates the return that would
-normally be expected from that market exposure.
 
-The **residual return** is the stock's actual return minus this expected
-market-driven return. A negative residual therefore means that the stock
-underperformed the proxy after allowing for its usual market sensitivity.
-
-The strategy adds these residual returns over time to form a **residual
-displacement series**. This series describes how far the stock has moved
-relative to the market proxy, rather than how far its raw price has moved.
-
-### Residual efficiency
-
-Residual efficiency compares the net distance travelled by the residual series
-over the selection window with the sum of all its daily movements.
-
-- A low value means that the residual travelled back and forth repeatedly,
-  which is more suitable for grid trading.
-- A high value means that most movement occurred in one direction, which is
-  more consistent with a trend.
-
-### Tradable amplitude
-
-Robust residual amplitude is the distance between the 90th percentile and the
-10th percentile of the residual displacement series. Using percentiles reduces
-the influence of one unusual price spike.
-
-The selector subtracts the complete estimated round-trip trading hurdle from
-this amplitude. The hurdle includes buy and sell commission, sell tax, the
-bid/ask spread and the execution haircut.
-
-A ticker is rejected when residual amplitude is insufficient to exceed this
-hurdle.
-
-### Reversal consistency
-
-The selector measures how often a sufficiently large residual displacement
-subsequently moves back toward its recent centre. Tickers with no qualifying
-reversal events are excluded.
 
 ### Ticker and sector score
 
@@ -126,37 +86,34 @@ Eligible tickers are ranked on three equally weighted characteristics:
 3. a higher observed rate of reversal toward the recent centre.
 
 The average of these three ranks becomes the ticker's grid-suitability score.
+The selector prefers stocks that frequently oscillate around their recent average, move far enough to cover trading costs, and regularly return toward that average after deviating from it.
 
-Liquidity and severe-downtrend risk are hard gates rather than compensating
-score components.
 
-A sector must contain at least two eligible tickers. Its score is the median
-score of its two highest-ranked eligible stocks. The highest-ranked sector
-and its top two stocks are frozen for the following month.
+### Ticker Selection
 
-### Grid construction
+At each selection date, the strategy evaluates every eligible stock using only historical data available before trading begins.
 
-The closing price observed at the monthly selection cutoff becomes the grid's
-reference price. Buy orders are placed at successively lower geometric levels:
-each new level is one grid-spacing percentage below the preceding level.
+The following technical indicators are used:
 
-After a buy is filled, its sell target is the next grid level above its entry.
-For the first buy level, that target is the original reference price.
+- **Liquidity:** median daily traded-value proxy, median minute volume, active trading-day ratio, and volume stability.
+- **Mean reversion:** price z-score reversal rate, return-reversal correlation, and estimated reversion half-life.
+- **Trend strength:** ADX(14), directional run length, and return autocorrelation. Lower trend persistence is preferred.
+- **Volatility stability:** ATR(14) stability, realized-volatility variation, intraday-range stability, and volatility-spike frequency.
+- **Downside risk:** downside gaps, extreme negative returns, maximum adverse excursion, and floor-price events.
 
-Grid spacing adapts to recent volatility. It starts at 75% of the stock's
-20-session average true range expressed as a percentage of price. Spacing is
-then constrained to a minimum of 0.8% and a maximum of 2.5%.
+Each stock receives five category scores:
 
-The frozen optimized grid uses:
+`selection_score = 0.25 * liquidity_score + 0.30 * mean_reversion_score + 0.20 * trend_suitability_score + 0.15 * volatility_stability_score + 0.10 * tail_safety_score`
 
-- four geometric levels;
-- three independent 100-share cells per level;
-- at most two selected stocks;
-- up to 45% capital allocation per selected ticker;
-- 10% minimum aggregate cash reserve.
+The selector prefers stocks that:
 
-Using independent board-lot cells allows the account to liquidate inventory
-incrementally instead of requiring one large all-or-none exit.
+- trade frequently with stable volume;
+- regularly move back toward their recent average;
+- have weak directional trends;
+- maintain relatively stable volatility;
+- have fewer extreme downside movements.
+
+Stocks that fail the data-quality, liquidity, trend, or tail-risk gates are excluded. The remaining stocks are ranked by their total selection score.
 
 ## Data
 
@@ -166,6 +123,8 @@ incrementally instead of requiring one large all-or-none exit.
 - **Daily data:** OHLC, ceiling, floor and matched volume
 - **Minute data:** matched prices, level-one bid/ask, displayed depth and
   matched quantity
+- **Length**: 2022-01-01 to 2026-07-16
+  
 - **Exchange:** HSX
 - **Instruments:**
   - banks: MBB, TCB, VCB and VPB;
@@ -203,7 +162,62 @@ selector/trading overlap sessions = 0
 
 Completed deployment data may become historical information for the next
 rotation. Future deployment data can never enter its own selection.
+### Grid construction
 
+
+
+
+The closing price observed at the monthly selection cutoff becomes the grid's
+reference price. Buy orders are placed at successively lower geometric levels:
+each new level is one grid-spacing percentage below the preceding level.
+
+After a buy is filled, its sell target is the next grid level above its entry.
+For the first buy level, that target is the original reference price.
+
+Grid spacing adapts to recent volatility. It starts at 75% of the stock's
+20-session average true range expressed as a percentage of price. Spacing is
+then constrained to a minimum of 0.8% and a maximum of 2.5%.
+
+The frozen optimized grid uses:
+
+- four geometric levels;
+- three independent 100-share cells per level;
+- at most two selected stocks;
+- up to 45% capital allocation per selected ticker;
+- 10% minimum aggregate cash reserve.
+
+Using independent board-lot cells allows the account to liquidate inventory
+incrementally instead of requiring one large all-or-none exit.
+### Grid Spacing
+
+The strategy uses four equally spaced, cost-aware grid levels.
+
+The grid step is:
+
+`grid_step = round_up_to_tick(max(0.75 * ATR_14, 3.0 * round_trip_cost))`
+
+Where:
+
+- `ATR_14` is calculated from completed five-minute bars.
+- `round_trip_cost` includes buy commission, sell commission, selling tax, and one spread tick.
+
+
+The reference price is the median of the last 20 completed five-minute closes.
+
+The four buy levels are:
+
+- `buy_level_1 = reference_price - 1 * grid_step`
+- `buy_level_2 = reference_price - 2 * grid_step`
+- `buy_level_3 = reference_price - 3 * grid_step`
+- `buy_level_4 = reference_price - 4 * grid_step`
+
+Every price is rounded to a valid exchange tick. Each level contains three independent 100-share cells.
+
+The equivalent percentage spacing is:
+
+`grid_spacing_percentage = grid_step / reference_price`
+
+The percentage is dynamic because it changes with volatility, transaction costs, the reference price, and the valid tick size.
 
 
 ### Transaction assumptions
