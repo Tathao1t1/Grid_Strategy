@@ -148,6 +148,64 @@ For each session it averages the adjusted daily returns of all six stocks and
 compounds those returns without fees or tax. It is a daily equal-weight proxy,
 not the grid's selected portfolio and not an official index.
 
+## In-Sample Backtesting
+
+The initial grid configuration was evaluated from 2023-01-03 through
+2023-12-29 using VND 1 billion.
+| Deployment month | Selection cutoff | Selected tickers | Outcome |
+|---|---|---|---|
+| January 2023 | 2022-12-30 | None | Market veto |
+| February 2023 | 2023-01-31 | None | Market veto |
+| March 2023 | 2023-02-28 | None | Market veto |
+| April 2023 | 2023-03-31 | TCB, VCB | Active |
+| May 2023 | 2023-04-28 | VCB, TCB | Active |
+| June 2023 | 2023-05-31 | VCB, TCB | Active |
+| July 2023 | 2023-06-30 | VPB, MBB | Active |
+| August 2023 | 2023-07-31 | MBB, TCB | Active |
+| September 2023 | 2023-08-31 | TCB, VCB | Active |
+| October 2023 | 2023-09-29 | TCB, VCB | Active |
+| November 2023 | 2023-10-31 | None | Market veto |
+| December 2023 | 2023-11-30 | None | Market veto |
+
+### In-sample result
+
+| Metric | Value |
+|---|---:|
+| Net P&L | **+VND 618,617** |
+| Total return | **+0.0619%** |
+| Annualized Sharpe ratio | 0.1844 |
+| Maximum drawdown | −0.1564% |
+| Profit factor | 1.2211 |
+| Completed sales | 83 |
+| Active rotations | 7 of 12 |
+| Equal-weight proxy return | +33.3397% |
+| Active return | −33.2778% |
+
+Account reconciliation:
+
+```text
+gross trading P&L      +VND 2,000,000
+commission             -VND 1,035,293
+sell tax               -VND   346,090
+--------------------------------------
+net realized P&L       +VND   618,617
+reconciliation error                0
+```
+
+Although the strategy was slightly profitable in absolute terms, it
+dramatically underperformed passive exposure during a strong benchmark year.
+
+### In-sample charts
+
+![In-sample equity versus benchmark](data/sector_rotation_grid/in_sample/charts/equity_vs_benchmark.svg)
+
+![In-sample drawdown](data/sector_rotation_grid/in_sample/charts/drawdown.svg)
+
+![In-sample monthly returns](data/sector_rotation_grid/in_sample/charts/monthly_returns.svg)
+
+![In-sample P&L attribution](data/sector_rotation_grid/in_sample/charts/pnl_attribution.svg)
+
+
 ## Results
 
 | Evaluation block | Strategy return | Net P&L | Proxy return | Active return |
