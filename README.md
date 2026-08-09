@@ -214,11 +214,6 @@ The four buy levels are:
 
 Every price is rounded to a valid exchange tick. Each level contains three independent 100-share cells.
 
-The equivalent percentage spacing is:
-
-
-
-The percentage is dynamic because it changes with volatility, transaction costs, the reference price, and the valid tick size.
 
 
 ### Transaction assumptions
