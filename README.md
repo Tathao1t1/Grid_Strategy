@@ -8,7 +8,7 @@ grid construction, then minute bid/ask and matched-trade data for execution.
 
 Stocks that recently moved back and forth around a market-adjusted centre,
 with enough movement to exceed estimated costs, may continue to provide
-short-horizon reversal opportunities during the next month.
+short-horizon reversal opportunities and earn profit during the next month.
 
 A negative price deviation alone is not treated as proof of reversal. The
 selector first requires recent oscillation, adequate amplitude, observed
