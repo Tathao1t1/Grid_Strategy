@@ -1,0 +1,81 @@
+{
+  "config": {
+    "atr_sessions": 20,
+    "board_lot": 100,
+    "buffer_atr": 0.75,
+    "buy_levels": 3,
+    "center_sessions": 20,
+    "commission_rate": 0.0015,
+    "cooldown_sessions": 5,
+    "execution_haircut": 0.0005,
+    "inventory_skew": 0.5,
+    "market_downtrend_return5": -0.05,
+    "maximum_concurrent": 3,
+    "maximum_horizon": 15,
+    "maximum_inventory_shares": 600,
+    "quantity_growth": 1.5,
+    "range_atr": 2.0,
+    "residual_breakdown_z": -2.0,
+    "residual_z_max": -0.5,
+    "sell_tax_rate": 0.001,
+    "settlement_sessions": 2,
+    "stress_budget_fraction": 0.015,
+    "ticker_deep_downtrend_return10": -0.08,
+    "total_grid_intervals": 6
+  },
+  "final_test_range_detected_but_not_parsed": [
+    "2025-07-14",
+    "2026-07-16"
+  ],
+  "final_test_used": false,
+  "gates": {
+    "enough_executed_campaigns": false,
+    "farther_level_campaigns_profitable": false,
+    "positive_after_best_removed": false,
+    "positive_doubled_cost_pnl": false,
+    "positive_median_pnl": false,
+    "positive_total_pnl": false,
+    "profit_factor_at_least_1_20": false,
+    "target_gains_cover_other_losses": false,
+    "worst_loss_within_1_5pct_nav": false
+  },
+  "independent_validation": false,
+  "live_authorization": false,
+  "metrics": {
+    "activation_candidates": 219,
+    "best_removed_total_pnl_vnd": -6296791,
+    "buffer_shutdowns": 20,
+    "deep_trend_shutdowns": 19,
+    "distance_conditional_campaign_pnl_vnd": {
+      "0": -3263685,
+      "1": -6061336,
+      "2": -2382849
+    },
+    "double_cost_total_pnl_vnd": -7887797,
+    "executed_campaigns": 27,
+    "maximum_inventory_shares": 500,
+    "median_net_pnl_vnd": -11558,
+    "normal_target_gains_vnd": 343052,
+    "profit_factor": 0.022049043409166722,
+    "risk_time_losses_vnd": 6465267,
+    "selected_campaigns": 65,
+    "stress_cancelled_orders": 1,
+    "stress_reduced_orders": 1,
+    "target_sales": 27,
+    "ticker_pnl_vnd": {
+      "FPT": -673692,
+      "HPG": 68261,
+      "MWG": -1707734,
+      "PNJ": -167595,
+      "SSI": -455722,
+      "TCB": -797078,
+      "VCB": -2533072,
+      "VND": 25286,
+      "VPB": -6058
+    },
+    "total_net_pnl_vnd": -6247404,
+    "worst_campaign_pnl_vnd": -1717989
+  },
+  "status": "exploratory_not_viable",
+  "trial_id": "TRIAL9-DYNAMIC-INVENTORY-AWARE-GRID"
+}

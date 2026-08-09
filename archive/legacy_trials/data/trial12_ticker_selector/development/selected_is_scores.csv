@@ -1,0 +1,1 @@
+partition,fold_id,as_of_date,ticker,history_start,historical_campaigns,ticker_mean_return,pooled_mean_return,shrunk_mean_return,downside_semideviation,score,eligible,selected_rank

@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/PLUTUS-Research-darkgreen)
+
 ![Static Badge](https://img.shields.io/badge/PLUTUS-Sector%20Rotation-darkblue)
 ![Static Badge](https://img.shields.io/badge/PLUTUS-GRID-%23880A88)
 
@@ -171,19 +171,17 @@ incrementally instead of requiring one large all-or-none exit.
   - banks: MBB, TCB, VCB and VPB;
   - securities: SSI and VND.
 
-FPT and PNJ were removed from the active universe. HPG and MWG were not used
-because each would form a one-stock “sector,” which would not constitute a
-genuine sector-rotation comparison.
+
 
 ### Chronological research periods
 
 | Research stage | Period | Sessions | Purpose |
 |---|---|---:|---|
-| Selector development | 2022-01-04–2022-12-30 | 249 | Select and freeze indicator horizon |
-| In-sample trading | 2023-01-03–2023-12-29 | 249 | Test the initial hypothesis |
+| Develop the ticker-selection | 2022-01-04–2022-12-30 | 249 | Develop ticker selection  |
+| Initial in-sample trading | 2023-01-03–2023-12-29 | 249 | Test the initial grid hypothesis |
 | Optimization | 2024-01-02–2024-12-31 | 250 | Select grid parameters |
-| Internal diagnostic OOS | 2025-01-02–2025-06-30 | 119 | Diagnose the frozen strategy |
-| Unused buffer | 2025-07-01–2025-07-11 | 9 | Settlement/data separation |
+| Internal validation | 2025-01-02–2025-06-30 | 119 | Evaluate the selected configuration once for robustness and identify whether it is suitable for final testing |
+| Exclusion buffer | 2025-07-01–2025-07-11 | 9 | Settlement/data separation |
 | Locked final holdout | 2025-07-14–2026-07-16 | 252 | Not opened |
 
 The January–June 2025 block was opened after the development gate had failed.
@@ -206,14 +204,7 @@ selector/trading overlap sessions = 0
 Completed deployment data may become historical information for the next
 rotation. Future deployment data can never enter its own selection.
 
-### Benchmark limitation
 
-The repository does not contain official VN-Index or sector-index history.
-Therefore, market adjustment and performance charts use a clearly labelled
-equal-weight proxy constructed from the six bank and securities stocks.
-
-This proxy must not be described as VN-Index performance. The benchmark
-interface can be replaced when an authoritative index series is supplied.
 
 ### Transaction assumptions
 
@@ -419,15 +410,9 @@ The primary metrics are:
 - commission, sell tax and execution friction;
 - loss attribution by exit type, ticker, sector, level and month.
 
-The Sharpe ratio uses daily account returns:
 
-> Calculate the average daily account return, divide it by the standard
-> deviation of daily returns, and annualize the result using 252 trading
-> sessions.
 
-No risk-free rate is subtracted in the current implementation. This must be
-considered when comparing the reported Sharpe ratio with studies using a
-positive risk-free rate.
+
 
 ## Optimization
 
@@ -733,9 +718,4 @@ The suite verifies:
 ## References
 
 1. ALGOTRADE, *Algorithmic Trading Theory and Practice—A Practical Guide with
-   Applications on the Vietnamese Stock Market*, 1st ed., DIMI BOOK, 2023,
-   Chapter 3. [Knowledge Hub](https://hub.algotrade.vn/knowledge-hub/)
-2. Project execution assumptions and results:
-   `research_log/SECTOR_ROTATION_GRID_V1_DEVELOPMENT_RESULT.md`
-3. Diagnostic OOS analysis:
-   `research_log/SECTOR_ROTATION_GRID_V1_DIAGNOSTIC_OOS_RESULT.md`
+   Applications on the Vietnamese Stock Market.  [Knowledge Hub](https://hub.algotrade.vn/knowledge-hub/)

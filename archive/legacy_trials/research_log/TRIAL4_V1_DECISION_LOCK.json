@@ -1,0 +1,30 @@
+{
+  "identity_hashes": {
+    "preregistration": "9dcadd61394bdcb530a7261b679e16a7d65031f607ae55a81771bcf8afffb156",
+    "script": "12345b2c02508384096227614d03182ef956dd7741df589c6974880a3aa9e276",
+    "sealed_raw_assignment_file": "ecf89e6ec8b95d0ad1cc1d09c6b6a1c0b5a35e43531686fd1bc4d82fde8c135f",
+    "sealed_raw_daily_file": "5fa014c90c729902c1eb9f9fc981aa4004dfb0ec58cc1bbea36c527d0c1f28ca",
+    "sealed_split_audit_file": "052aecc2c9e3a50525f3efaf396aba651532807606ed62fcc077489b760cf4d6",
+    "selected_in_sample_assignments": "3e6bc91d67b93cb2387f92cb74e5deb3408b307b076d4602fbfe5ca0efc4776f",
+    "selected_in_sample_vcb_rows": "f296139495ad422fea3213e17313b7d5e60149c199ed66bdab13b6109fcc806c",
+    "vcb_development_calendar": "ef9f464043162f39a748f1a72abf73ebea1958168b1e128328fc643e2ea0cd07"
+  },
+  "manifest_sha256": "05297f1a73a9f303b916831d6c936d5c5495df4f93b87f0c72fd041312bd3979",
+  "output_dir": "/Users/ttt/Grid_Trading_Strategy/data/trial4_simple_pullback/trial4_4a3fdcf798",
+  "output_hashes": {
+    "fold_candidates.csv": "25f4bc5377cc0b8bff664fe5a0979d0a8db3d10fd911ce19f0696e471b265933",
+    "fold_summary.csv": "ec6547e08b40ecb720fc537aead169d84164290aeddb1030c5c54f363ed53afe",
+    "frequency_blocks.csv": "ce3f9f9951c4b517f6e3e8b3e508fea47656e70b35b9e016ea0816788c7637f3",
+    "gate_report.json": "1bda3696ccbcba9ff8b0aa7c4c72b493b121bf8c6d365eb8bc031e6eea5f3c70",
+    "primary_events.csv": "3df7998b9a48cdaece09a6c31e5e15877e4662992dc5b8fc17ee8591edd5590f",
+    "quarantined_events.csv": "a2523fb01d2869cff08fbd746b21b188f01dac831de40b4f4ca7c604870ed085",
+    "quarantined_fold_rows.csv": "9ba6de93e0ed8fef5479bb8513e01d38fcb80693e61210c5c9c3aa8c666dab4e",
+    "unique_candidates.csv": "e3778a9d72559f9b660f368b46c29b4b83d54bfb6cdf04aeeda27cec31cac682",
+    "year_summary.csv": "2e0b56441579c6a51e5371efdec093ad03f9bf6bb4d45ba2c9d2414d34e3459a"
+  },
+  "result_fingerprint_sha256": "535d6d35eb09e0f4edd4ae1dfc9811cb9d7c914f68a4c914bdde461ea8c1d63e",
+  "run_id": "trial4_4a3fdcf798",
+  "schema_version": "trial4.v1",
+  "status": "inconclusive_sample",
+  "trial_id": "TRIAL4-VCB-SIMPLE-PULLBACK"
+}

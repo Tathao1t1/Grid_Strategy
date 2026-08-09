@@ -1,0 +1,148 @@
+{
+  "advance_to_final_confirmation": false,
+  "data_quality": {
+    "maximum_allowed_skipped_minute_rows": 2,
+    "minute_rows_skipped_for_missing_matched_ohlc": 0,
+    "quarantined_folds": 1
+  },
+  "economic_gates": {
+    "annualized_fold_sharpe": {
+      "observed": -0.974461677256966,
+      "passed": false,
+      "required": 0.5
+    },
+    "compounded_return_positive": {
+      "observed": -0.01407956999999993,
+      "passed": false,
+      "required": 0.0
+    },
+    "doubled_cost_all_folds_valid": {
+      "observed": 14,
+      "passed": true,
+      "required": 14
+    },
+    "doubled_cost_compounded_return_positive": {
+      "observed": -0.015844465452736878,
+      "passed": false,
+      "required": 0.0
+    },
+    "doubled_cost_trade_profit_factor": {
+      "observed": 0.23404666114796946,
+      "passed": false,
+      "required": 1.0
+    },
+    "forced_exit_loss_control": {
+      "observed": 3.477231820029242,
+      "passed": false,
+      "required_maximum": 1.0
+    },
+    "maximum_drawdown": {
+      "observed": -0.01749029349554776,
+      "passed": true,
+      "required": -0.05
+    },
+    "median_fold_return_positive": {
+      "observed": 0.0,
+      "passed": false,
+      "required": 0.0
+    },
+    "modeled_cost_per_rotation": {
+      "observed": 0.00180951,
+      "passed": true,
+      "required_maximum": 0.01
+    },
+    "modeled_cost_to_gross_profit": {
+      "observed": 0.5074244897959184,
+      "passed": false,
+      "required_maximum": 0.35
+    },
+    "profitable_fold_fraction": {
+      "observed": 0.14285714285714285,
+      "passed": false,
+      "required": 0.6
+    },
+    "trade_profit_factor": {
+      "observed": 0.28758508254752785,
+      "passed": false,
+      "required": 1.2
+    },
+    "worst_fold_return": {
+      "observed": -0.007651064129002183,
+      "passed": true,
+      "required": -0.08
+    }
+  },
+  "final_test_used": false,
+  "independent_unit": "two_month_portfolio_rotation",
+  "interpretation": "Ticker rows and individual trades are correlated diagnostics; the 15 chronological portfolio rotations are the research sample.",
+  "sample_gates": {
+    "minimum_active_folds": {
+      "observed": 6,
+      "passed": false,
+      "required": 10
+    },
+    "minimum_completed_campaigns": {
+      "observed": 4,
+      "passed": false,
+      "required": 30
+    },
+    "minimum_valid_folds": {
+      "observed": 14,
+      "passed": false,
+      "required": 15
+    }
+  },
+  "schema_version": "trial5.v1",
+  "scope": "development_walk_forward_only",
+  "statistics": {
+    "annualized_fold_sharpe": -0.974461677256966,
+    "average_capital_utilization": 0.009549469021256514,
+    "benchmark_compounded_return": 0.015930847480793986,
+    "completed_grid_cycles": 4,
+    "compounded_return": -0.01407956999999993,
+    "doubled_cost_compounded_return": -0.015844465452736878,
+    "doubled_cost_trade_profit_factor": 0.23404666114796946,
+    "doubled_cost_valid_folds": 14,
+    "folds_active": 6,
+    "folds_total": 15,
+    "folds_valid": 14,
+    "forced_exit_losses_vnd": 1976316,
+    "forced_loss_to_target_gain": 3.477231820029242,
+    "gross_turnover_vnd": 119270000,
+    "market_downtrend_compounded_return": -0.007651064129002183,
+    "market_downtrend_rotations": 2,
+    "market_downtrend_worst_return": -0.007651064129002183,
+    "maximum_capital_utilization": 0.13102162,
+    "maximum_drawdown": -0.01749029349554776,
+    "maximum_fold_modeled_cost_fraction": 0.00180951,
+    "maximum_fold_turnover_fraction": 0.5291,
+    "mean_fold_return": -0.0010093193893792754,
+    "median_fold_return": 0.0,
+    "modeled_cost_to_gross_profit": 0.5074244897959184,
+    "modeled_cost_vnd": 372957,
+    "positive_gross_trading_profit_vnd": 735000,
+    "profitable_fold_fraction": 0.14285714285714285,
+    "settlement_locked_exit_loss_vnd": 0,
+    "target_exit_gains_vnd": 568359,
+    "trade_profit_factor": 0.28758508254752785,
+    "valid_fold_ids": [
+      "wf_01",
+      "wf_02",
+      "wf_03",
+      "wf_04",
+      "wf_05",
+      "wf_06",
+      "wf_07",
+      "wf_08",
+      "wf_10",
+      "wf_11",
+      "wf_12",
+      "wf_13",
+      "wf_14",
+      "wf_15"
+    ],
+    "worst_fold_return": -0.007651064129002183
+  },
+  "status": "inconclusive_sample",
+  "trial_id": "TRIAL5-HSX-ROTATION-LONG-GRID"
+}

@@ -1,0 +1,13 @@
+{
+  "final_test_range_detected_but_not_parsed": [
+    "2025-07-14",
+    "2026-07-16"
+  ],
+  "final_test_used": false,
+  "independent_validation": false,
+  "live_authorization": false,
+  "recommended_variant": null,
+  "status": "no_exploratory_viable_variant",
+  "trial_id": "TRIAL8-SSI-EXPLORATORY-SENSITIVITY",
+  "variant_count": 9
+}

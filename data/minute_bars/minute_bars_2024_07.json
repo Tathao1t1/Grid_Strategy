@@ -1,0 +1,40 @@
+{
+  "period": "2024_07",
+  "status": "complete",
+  "start_inclusive": "2024-07-01",
+  "end_exclusive": "2024-08-01",
+  "requested_tickers": [
+    "FPT",
+    "VCB",
+    "HPG",
+    "MWG",
+    "TCB",
+    "MBB",
+    "VPB",
+    "SSI",
+    "VND",
+    "PNJ"
+  ],
+  "rows": 49435,
+  "matched_quantity_sum": 923385900,
+  "tickers_found": [
+    "FPT",
+    "HPG",
+    "MBB",
+    "MWG",
+    "PNJ",
+    "SSI",
+    "TCB",
+    "VCB",
+    "VND",
+    "VPB"
+  ],
+  "first_minute": "2024-07-01T09:15:00",
+  "last_minute": "2024-07-31T14:29:00",
+  "duplicate_keys": 0,
+  "missing_ohlc_rows": 0,
+  "invalid_ohlc_rows": 0,
+  "invalid_quantity_rows": 0,
+  "file": "data/minute_bars/minute_bars_2024_07.csv.gz",
+  "missing_tickers": []
+}

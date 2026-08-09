@@ -1,0 +1,67 @@
+{
+  "advance_to_final_oos": false,
+  "best_observed_configuration": {
+    "crash_veto": true,
+    "maximum_levels": 2,
+    "name": "anchor_reclaim_veto_2",
+    "reclaim_fraction": 0.25
+  },
+  "best_observed_in_sample_metrics": {
+    "active_folds": 8,
+    "annualized_fold_sharpe": -1.5321450939973553,
+    "best_removed_pnl_vnd": -1788547,
+    "double_cost_pnl_vnd": -2158550,
+    "entry_years": 2,
+    "forced_loss_reduction_vs_touch": 0.2211374360004016,
+    "grid_economic_pnl_vnd": -1936348,
+    "maximum_ticker_positive_fraction": 0.35673746664818723,
+    "maximum_year_fraction": 0.6458333333333334,
+    "median_pnl_vnd": -17385.5,
+    "other_losses_vnd": 3227432,
+    "positive_active_fold_fraction": 0.25,
+    "profit_factor": 0.4924609517015249,
+    "realized_maximum_drawdown_fraction": 0.015037017973450003,
+    "realized_maximum_drawdown_vnd": 1503711,
+    "selected_campaigns": 48,
+    "selected_pnl_vnd": -1479791,
+    "selected_targets": 24,
+    "target_gain_retention_vs_touch": 0.8284299162448323,
+    "target_gains_vnd": 1291084,
+    "target_rate_quintile_spread": 0.037037037037037035,
+    "valid_folds": 9,
+    "worst_pnl_vnd": -204365
+  },
+  "daily_final_range_detected_but_not_parsed": [
+    "2025-07-14",
+    "2026-07-16"
+  ],
+  "drawdown_definition": "realized closed-campaign equity; not minute mark-to-market",
+  "eligible_in_sample_variants": 0,
+  "excluded_tickers": [
+    "FPT",
+    "PNJ"
+  ],
+  "execution_universe": [
+    "HPG",
+    "MBB",
+    "MWG",
+    "SSI",
+    "TCB",
+    "VCB",
+    "VND",
+    "VPB"
+  ],
+  "exploratory_post_trial16_redesign": true,
+  "final_minute_holdout": [
+    "2025-07-14",
+    "2026-06-30"
+  ],
+  "final_test_used": false,
+  "internal_validation_gates": {},
+  "internal_validation_metrics": {},
+  "mechanic_variants": 4,
+  "selected_configuration": null,
+  "selected_in_sample_metrics": {},
+  "status": "no_in_sample_fair_value_variant",
+  "trial_id": "TRIAL17-FAIR-VALUE-REVERSAL-GRID"
+}

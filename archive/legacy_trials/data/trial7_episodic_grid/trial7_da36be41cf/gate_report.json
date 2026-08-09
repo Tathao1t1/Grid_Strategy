@@ -1,0 +1,57 @@
+{
+  "advance_to_minute_stage_b": false,
+  "economic_gates": {
+    "doubled_cost_profit_factor": false,
+    "positive_active_fold_fraction": false,
+    "positive_after_best_removed": false,
+    "positive_doubled_cost_pnl": false,
+    "positive_lower_level_episodes": false,
+    "positive_median_pnl": true,
+    "positive_total_pnl": false,
+    "profit_factor": false,
+    "target_gains_cover_risk_time_losses": false,
+    "ticker_concentration": true
+  },
+  "final_test_used": false,
+  "metrics": {
+    "activation_candidates": 67,
+    "best_removed_total_pnl_vnd": -3305597,
+    "double_cost_profit_factor": 0.2213852283947481,
+    "double_cost_total_pnl_vnd": -3953879,
+    "gap_risk_exit_episodes": 3,
+    "lower_level_episode_pnl_vnd": -1205138,
+    "lower_level_fills": 9,
+    "maximum_ticker_positive_pnl_fraction": 0.2472055425540912,
+    "median_net_pnl_vnd": 31231.0,
+    "normal_target_gains_vnd": 1535823,
+    "ordinary_target_sales": 25,
+    "profit_factor": 0.3471355849209844,
+    "risk_exit_episodes": 13,
+    "risk_time_losses_vnd": 4666485,
+    "selected_episodes": 36,
+    "time_exit_episodes": 3,
+    "total_net_pnl_vnd": -3046582,
+    "valid_folds": 15,
+    "year_counts": {
+      "2023": 16,
+      "2024": 14,
+      "2025": 6
+    }
+  },
+  "sample_gates": {
+    "activation_candidates": false,
+    "ordinary_target_sales": true,
+    "selected_episodes": false,
+    "valid_folds": true,
+    "year_concentration": true,
+    "year_distribution": true
+  },
+  "schema_version": "trial7.v1",
+  "sensitivity_sample_diagnostics": {
+    "at_least_20_selected": true,
+    "at_least_30_selected": true,
+    "decision_effect": "none"
+  },
+  "status": "inconclusive_sample",
+  "trial_id": "TRIAL7-HSX-CONFIRMED-EPISODIC-GRID"
+}

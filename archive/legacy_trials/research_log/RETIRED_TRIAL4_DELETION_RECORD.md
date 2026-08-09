@@ -1,0 +1,41 @@
+# Retired Trial 4 deletion record
+
+- Retirement date: 2026-07-24
+- Status: active implementation and generated working artifacts permanently
+  deleted at the user's request
+- Reason: Trial 4 was a fixed-VCB, sparse-signal experiment and does not match
+  the commercial workflow of selecting a ticker, deploying for one to two
+  months, and rotating.
+
+The sealed research record remains in:
+
+- `TRIAL4_VCB_SIMPLE_PULLBACK_PREREGISTRATION.md`
+- `TRIAL4_VCB_SIMPLE_PULLBACK_RESULT.md`
+- `TRIAL4_V1_DECISION_LOCK.json`
+
+Those retained files are historical audit evidence only. Trial 4 is no longer
+executable from this workspace and must not be silently reconstructed or used
+as Trial 5.
+
+## Deleted active files and SHA-256
+
+```text
+12345b2c02508384096227614d03182ef956dd7741df589c6974880a3aa9e276  study_trial4_simple_pullback.py
+78a0570a05f234cb7fd203efd2d6940f0f6a9ef28326aa32c5c265cb9f94eaeb  tests/test_trial4_simple_pullback.py
+ab36f17e8dfccd55e259ba07da097582a197feb0a49c3a80425ec1baa6333148  TRIAL4_SIMPLE_PULLBACK_GUIDE.md
+25f4bc5377cc0b8bff664fe5a0979d0a8db3d10fd911ce19f0696e471b265933  data/trial4_simple_pullback/trial4_4a3fdcf798/fold_candidates.csv
+ec6547e08b40ecb720fc537aead169d84164290aeddb1030c5c54f363ed53afe  data/trial4_simple_pullback/trial4_4a3fdcf798/fold_summary.csv
+ce3f9f9951c4b517f6e3e8b3e508fea47656e70b35b9e016ea0816788c7637f3  data/trial4_simple_pullback/trial4_4a3fdcf798/frequency_blocks.csv
+1bda3696ccbcba9ff8b0aa7c4c72b493b121bf8c6d365eb8bc031e6eea5f3c70  data/trial4_simple_pullback/trial4_4a3fdcf798/gate_report.json
+05297f1a73a9f303b916831d6c936d5c5495df4f93b87f0c72fd041312bd3979  data/trial4_simple_pullback/trial4_4a3fdcf798/manifest.json
+3df7998b9a48cdaece09a6c31e5e15877e4662992dc5b8fc17ee8591edd5590f  data/trial4_simple_pullback/trial4_4a3fdcf798/primary_events.csv
+a2523fb01d2869cff08fbd746b21b188f01dac831de40b4f4ca7c604870ed085  data/trial4_simple_pullback/trial4_4a3fdcf798/quarantined_events.csv
+9ba6de93e0ed8fef5479bb8513e01d38fcb80693e61210c5c9c3aa8c666dab4e  data/trial4_simple_pullback/trial4_4a3fdcf798/quarantined_fold_rows.csv
+e3778a9d72559f9b660f368b46c29b4b83d54bfb6cdf04aeeda27cec31cac682  data/trial4_simple_pullback/trial4_4a3fdcf798/unique_candidates.csv
+2e0b56441579c6a51e5371efdec093ad03f9bf6bb4d45ba2c9d2414d34e3459a  data/trial4_simple_pullback/trial4_4a3fdcf798/year_summary.csv
+052aecc2c9e3a50525f3efaf396aba651532807606ed62fcc077489b760cf4d6  data/trial4_splits_vcb/split_audit.json
+ecf89e6ec8b95d0ad1cc1d09c6b6a1c0b5a35e43531686fd1bc4d82fde8c135f  data/trial4_splits_vcb/walk_forward_date_assignments.csv
+06f1abddf615de391f20a64aba9a3794d7a0927d37afd69ceceb5c8b4554fb5d  data/trial4_splits_vcb/walk_forward_folds.csv
+```
+
+Python bytecode caches for the deleted script and test were also removed.

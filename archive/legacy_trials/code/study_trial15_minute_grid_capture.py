@@ -1,0 +1,627 @@
+#!/usr/bin/env python3
+"""Trial 15 dense signal ranking with minute-executed repeated grid cycles."""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import itertools
+import json
+import statistics
+from dataclasses import asdict
+from datetime import date, datetime, time
+from pathlib import Path
+from typing import Sequence
+
+import study_trial5_rotation_grid as trial5
+import study_trial6_mean_reversion as trial6
+import study_trial11_trend_grid as trial11
+import study_trial12_ticker_selector as trial12
+import study_trial13_dense_grid_ev as trial13
+import study_trial14_dense_grid_capture as trial14
+
+
+TRIAL_ID = "TRIAL15-MINUTE-EXECUTED-GRID-CAPTURE"
+IS_FOLDS = trial13.IS_FOLDS
+VALIDATION_FOLDS = trial13.VALIDATION_FOLDS
+EXECUTION = trial5.Config()
+HORIZON_SESSIONS = 10
+FINAL_START = date(2025, 7, 14)
+FINAL_END = date(2026, 6, 30)
+
+MINUTE_FIELDS = (
+    "fold_id", "signal_date", "entry_date", "exit_date", "ticker", "sector",
+    "spacing_fraction", "target_sales", "net_pnl_vnd",
+    "double_cost_pnl_vnd", "campaign_return", "normal_target_gain_vnd",
+    "other_loss_vnd", "target_completion", "capture_return",
+    "inventory_loss_return", "predicted_target_probability",
+    "predicted_capture_return", "predicted_inventory_loss_return",
+    "grid_score", *trial13.FEATURE_NAMES,
+)
+FOLD_FIELDS = trial14.FOLD_FIELDS
+MODEL_FIELDS = trial14.MODEL_FIELDS
+SEARCH_FIELDS = trial14.SEARCH_FIELDS
+
+
+def minute_space() -> list[trial14.CaptureConfig]:
+    return [
+        trial14.CaptureConfig(*values)
+        for values in itertools.product(
+            (10, 100), (0.25, 0.40), (1.00, 1.50),
+            (0.000, 0.001), (1, 2, 3),
+        )
+    ]
+
+
+def settlement_at(path_dates: Sequence[date], index: int) -> datetime:
+    target = index + EXECUTION.settlement_sessions
+    if target >= len(path_dates):
+        return datetime.max
+    return datetime.combine(
+        path_dates[target], time.fromisoformat(EXECUTION.settlement_time)
+    )
+
+
+def usable_book(
+    bar: trial5.MinuteBar, side: str, quantity: int = 100
+) -> bool:
+    spread = trial5.spread_bps(bar)
+    book_quantity = (
+        bar.best_ask_quantity if side == "buy" else bar.best_bid_quantity
+    )
+    book_price = bar.best_ask_vnd if side == "buy" else bar.best_bid_vnd
+    return (
+        book_price is not None
+        and (book_quantity is None or book_quantity >= quantity)
+        and spread is not None
+        and spread <= EXECUTION.maximum_normal_spread_bps
+        and int(
+            bar.matched_quantity * EXECUTION.maximum_minute_participation
+        ) >= quantity
+    )
+
+
+def one_cost_scenario(
+    ticker: str,
+    signal_date: date,
+    path_dates: Sequence[date],
+    minutes: dict[date, list[trial5.MinuteBar]],
+    spacing: float,
+    cost_multiplier: float,
+) -> dict[str, object] | None:
+    quantity = EXECUTION.board_lot
+    first_choice: tuple[int, trial5.MinuteBar] | None = None
+    for bar in minutes[path_dates[0]]:
+        if usable_book(bar, "buy", quantity):
+            first_choice = (0, bar)
+            break
+    if first_choice is None:
+        return None
+    first_index, first_bar = first_choice
+    assert first_bar.best_ask_vnd is not None
+    centre = trial5.round_to_hsx_tick(
+        first_bar.best_ask_vnd
+        * (1 + EXECUTION.execution_haircut * cost_multiplier),
+        "sell",
+    )
+    target = trial5.round_to_hsx_tick(centre * (1 + spacing), "sell")
+    hard_lower = trial5.round_to_hsx_tick(
+        centre / ((1 + spacing) ** 3), "buy"
+    )
+    acquisition, _ = trial5.acquisition_cash(
+        centre, quantity, EXECUTION, cost_multiplier
+    )
+    first_capital = acquisition
+    lot: dict[str, object] | None = {
+        "acquisition": acquisition,
+        "tradeable_at": settlement_at(path_dates, first_index),
+    }
+    rearm_after: datetime | None = None
+    shutdown = False
+    cycles = 0
+    target_gains = 0
+    other_losses = 0
+    pnl = 0
+    last_sale_date = path_dates[0]
+    initial_event = first_bar.event_time
+    for day_index, trading_date in enumerate(path_dates):
+        bars = minutes.get(trading_date, [])
+        for bar in bars:
+            if bar.event_time <= initial_event:
+                continue
+            acted = False
+            if (
+                not shutdown
+                and (
+                    bar.low_vnd <= hard_lower
+                    or (
+                        bar.best_bid_vnd is not None
+                        and bar.best_bid_vnd <= hard_lower
+                    )
+                )
+            ):
+                shutdown = True
+            if lot is not None and datetime.fromisoformat(
+                str(lot["tradeable_at"])
+            ) <= bar.event_time:
+                reason = ""
+                limit: int | None = None
+                if shutdown:
+                    reason = "risk_exit"
+                elif (
+                    bar.best_bid_vnd is not None
+                    and bar.best_bid_vnd >= target
+                    and bar.close_vnd >= target + trial5.hsx_tick_vnd(target)
+                ):
+                    reason = "grid_target"
+                    limit = target
+                if reason and usable_book(bar, "sell", quantity):
+                    assert bar.best_bid_vnd is not None
+                    price = trial5._execution_sell_price(
+                        bar.best_bid_vnd, limit, EXECUTION, cost_multiplier
+                    )
+                    proceeds, _, _ = trial5.net_sale_cash(
+                        price, quantity, EXECUTION, cost_multiplier
+                    )
+                    realized = proceeds - int(lot["acquisition"])
+                    pnl += realized
+                    if reason == "grid_target":
+                        cycles += 1
+                        target_gains += max(realized, 0)
+                    else:
+                        other_losses += -min(realized, 0)
+                    lot = None
+                    last_sale_date = trading_date
+                    rearm_after = settlement_at(path_dates, day_index)
+                    acted = True
+            if (
+                acted
+                or lot is not None
+                or shutdown
+                or day_index > len(path_dates) - 3
+                or rearm_after is None
+                or bar.event_time <= rearm_after
+                or not usable_book(bar, "buy", quantity)
+                or bar.best_ask_vnd is None
+                or bar.best_ask_vnd > centre
+                or bar.close_vnd > centre - trial5.hsx_tick_vnd(centre)
+            ):
+                continue
+            price = trial5._execution_buy_price(
+                bar.best_ask_vnd, centre, EXECUTION, cost_multiplier
+            )
+            acquisition, _ = trial5.acquisition_cash(
+                price, quantity, EXECUTION, cost_multiplier
+            )
+            lot = {
+                "acquisition": acquisition,
+                "tradeable_at": settlement_at(path_dates, day_index),
+            }
+            acted = True
+    if lot is not None:
+        final_date = path_dates[-1]
+        tradeable = datetime.fromisoformat(str(lot["tradeable_at"]))
+        exit_bar = next(
+            (
+                bar for bar in reversed(minutes.get(final_date, []))
+                if bar.event_time >= tradeable
+                and usable_book(bar, "sell", quantity)
+            ),
+            None,
+        )
+        if exit_bar is None or exit_bar.best_bid_vnd is None:
+            return None
+        price = trial5._execution_sell_price(
+            exit_bar.best_bid_vnd, None, EXECUTION, cost_multiplier
+        )
+        proceeds, _, _ = trial5.net_sale_cash(
+            price, quantity, EXECUTION, cost_multiplier
+        )
+        realized = proceeds - int(lot["acquisition"])
+        pnl += realized
+        other_losses += -min(realized, 0)
+        last_sale_date = final_date
+    return {
+        "entry_date": path_dates[0].isoformat(),
+        "exit_date": last_sale_date.isoformat(),
+        "target_sales": cycles,
+        "net_pnl_vnd": pnl,
+        "normal_target_gain_vnd": target_gains,
+        "other_loss_vnd": other_losses,
+        "first_capital_vnd": first_capital,
+    }
+
+
+def simulate_minute_campaign(
+    ticker: str,
+    signal_date: date,
+    path_dates: Sequence[date],
+    minutes: dict[date, list[trial5.MinuteBar]],
+    feature: dict[str, float],
+) -> dict[str, object] | None:
+    spacing = min(
+        EXECUTION.maximum_grid_step,
+        max(
+            EXECUTION.minimum_grid_step,
+            0.75 * float(feature["atr20_fraction"]),
+        ),
+    )
+    normal = one_cost_scenario(
+        ticker, signal_date, path_dates, minutes, spacing, 1.0
+    )
+    doubled = one_cost_scenario(
+        ticker, signal_date, path_dates, minutes, spacing, 2.0
+    )
+    if normal is None or doubled is None:
+        return None
+    capital = int(normal["first_capital_vnd"])
+    return {
+        "ticker": ticker,
+        "sector": trial11.SECTORS[ticker],
+        "signal_date": signal_date.isoformat(),
+        "entry_date": normal["entry_date"],
+        "exit_date": normal["exit_date"],
+        "spacing_fraction": spacing,
+        "target_sales": int(normal["target_sales"]),
+        "net_pnl_vnd": int(normal["net_pnl_vnd"]),
+        "double_cost_pnl_vnd": int(doubled["net_pnl_vnd"]),
+        "campaign_return": int(normal["net_pnl_vnd"]) / capital,
+        "normal_target_gain_vnd": int(normal["normal_target_gain_vnd"]),
+        "other_loss_vnd": int(normal["other_loss_vnd"]),
+        "target_completion": int(normal["target_sales"]) > 0,
+        "capture_return": int(normal["normal_target_gain_vnd"]) / capital,
+        "inventory_loss_return": int(normal["other_loss_vnd"]) / capital,
+        **feature,
+        "predicted_target_probability": "",
+        "predicted_capture_return": "",
+        "predicted_inventory_loss_return": "",
+        "grid_score": "",
+    }
+
+
+def as_minute_fold(
+    fold: trial6.Fold, dates: Sequence[date]
+) -> trial5.Fold:
+    return trial5.Fold(fold.fold_id, (), tuple(dates))
+
+
+def generate_minute_observations(
+    fold: trial6.Fold,
+    allowed_dates: Sequence[date],
+    minute_dir: Path,
+    daily: dict[str, list[trial6.DailyBar]],
+    calendar: Sequence[date],
+    dense_features: dict[tuple[str, int], dict[str, float]],
+) -> list[dict[str, object]]:
+    if not allowed_dates:
+        return []
+    minute_fold = as_minute_fold(fold, allowed_dates)
+    minutes, _ = trial5.load_fold_minutes(
+        minute_dir, minute_fold, trial11.TICKERS
+    )
+    allowed = set(allowed_dates)
+    indices = {value: index for index, value in enumerate(calendar)}
+    observations: list[dict[str, object]] = []
+    for signal_date in allowed_dates:
+        signal_index = indices[signal_date]
+        path_dates = calendar[
+            signal_index + 1:signal_index + 1 + HORIZON_SESSIONS
+        ]
+        if (
+            len(path_dates) != HORIZON_SESSIONS
+            or any(value not in allowed for value in path_dates)
+        ):
+            continue
+        for ticker in trial11.TICKERS:
+            feature = dense_features.get((ticker, signal_index))
+            if feature is None:
+                continue
+            ticker_bars = daily[ticker]
+            if any(
+                not ticker_bars[indices[value]].reset_verifiable
+                or ticker_bars[indices[value]].reference_reset
+                for value in path_dates
+            ):
+                continue
+            row = simulate_minute_campaign(
+                ticker, signal_date, path_dates, minutes[ticker], feature
+            )
+            if row is not None:
+                row["fold_id"] = fold.fold_id
+                observations.append(row)
+    return observations
+
+
+def prepare_predictions(
+    folds: Sequence[trial6.Fold],
+    minute_dir: Path,
+    daily: dict[str, list[trial6.DailyBar]],
+    calendar: Sequence[date],
+    dense_features: dict[tuple[str, int], dict[str, float]],
+    partition: str,
+) -> tuple[
+    dict[tuple[int, str], list[dict[str, object]]],
+    dict[str, int],
+    list[dict[str, object]],
+    dict[str, list[dict[str, object]]],
+]:
+    predictions: dict[tuple[int, str], list[dict[str, object]]] = {}
+    train_counts: dict[str, int] = {}
+    model_rows: list[dict[str, object]] = []
+    deployments: dict[str, list[dict[str, object]]] = {}
+    for fold in folds:
+        train = generate_minute_observations(
+            fold, fold.train_dates, minute_dir, daily, calendar, dense_features
+        )
+        deployment = generate_minute_observations(
+            fold, fold.oos_dates, minute_dir, daily, calendar, dense_features
+        )
+        if len(train) < 30:
+            raise ValueError(
+                f"{fold.fold_id} has only {len(train)} minute train rows"
+            )
+        train_counts[fold.fold_id] = len(train)
+        deployments[fold.fold_id] = deployment
+        for penalty in (10, 100):
+            scored, target_model, capture_model, loss_model = (
+                trial14.fit_and_score(train, deployment, penalty)
+            )
+            predictions[(penalty, fold.fold_id)] = scored
+            model_rows.append(trial14.model_record(
+                partition, fold.fold_id, penalty, len(train), target_model,
+                capture_model, loss_model,
+            ))
+    return predictions, train_counts, model_rows, deployments
+
+
+def control_campaigns(
+    rows: Sequence[dict[str, object]],
+    calendar: Sequence[date],
+) -> list[dict[str, object]]:
+    eligible: list[dict[str, object]] = []
+    for source in rows:
+        if (
+            float(source["residual_z5"]) <= -0.50
+            and float(source["residual_1"]) > 0
+            and float(source["market_return20"]) > 0
+            and float(source["close_minus_sma50_fraction"]) > 0
+            and float(source["sma20_minus_sma50_fraction"]) > 0
+        ):
+            row = dict(source)
+            row["predicted_target_probability"] = 1.0
+            row["predicted_capture_return"] = -float(row["residual_z5"])
+            row["predicted_inventory_loss_return"] = 0.0
+            row["grid_score"] = -float(row["residual_z5"])
+            eligible.append(row)
+    return trial14.select_campaigns(
+        eligible, calendar, trial14.CaptureConfig(10, 0.0, 0.0, 0.0, 3)
+    )
+
+
+def file_sha(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def write_csv(
+    path: Path,
+    rows: Sequence[dict[str, object]],
+    fields: Sequence[str],
+) -> None:
+    with path.open("x", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(
+            handle, fieldnames=fields, extrasaction="ignore"
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def optimize_validate(output_dir: Path) -> dict[str, object]:
+    if output_dir.exists():
+        raise FileExistsError(f"Create-only output exists: {output_dir}")
+    output_dir.mkdir(parents=True)
+    daily_path = Path("data_algotradeDB_split.csv")
+    minute_dir = Path("data/minute_bars")
+    assignment_path = Path(
+        "data/trial5_splits_rotation/walk_forward_date_assignments.csv"
+    )
+    daily, calendar, final_range = trial6.read_development_daily(
+        daily_path, trial11.TICKERS
+    )
+    folds = trial6.read_folds(assignment_path)
+    fold_by_id = {fold.fold_id: fold for fold in folds}
+    is_folds = [fold_by_id[value] for value in IS_FOLDS]
+    validation_folds = [fold_by_id[value] for value in VALIDATION_FOLDS]
+    trend_features = trial11.build_feature_cache(daily, calendar)
+    dense_features = trial13.build_dense_feature_cache(
+        daily, calendar, trend_features
+    )
+    predictions, train_counts, is_model_rows, deployments = (
+        prepare_predictions(
+            is_folds, minute_dir, daily, calendar, dense_features, "in_sample"
+        )
+    )
+    controls = {
+        fold.fold_id: control_campaigns(
+            deployments[fold.fold_id], calendar
+        )
+        for fold in is_folds
+    }
+    search_rows: list[dict[str, object]] = []
+    results: dict[str, tuple] = {}
+    for config in minute_space():
+        metrics, selected, fold_rows, scored = (
+            trial14.evaluate_configuration(
+                config, is_folds, predictions, train_counts, controls,
+                calendar, "in_sample",
+            )
+        )
+        eligible = trial14.in_sample_eligible(metrics)
+        search_rows.append({
+            "rank": "",
+            "eligible": eligible,
+            "parameter_json": config.key(),
+            **asdict(config),
+            **{
+                field: metrics[field]
+                for field in SEARCH_FIELDS if field in metrics
+            },
+        })
+        results[config.key()] = (metrics, selected, fold_rows, scored)
+    eligible_rows = [row for row in search_rows if bool(row["eligible"])]
+    eligible_rows.sort(key=lambda row: (
+        -int(row["selected_pnl_vnd"]),
+        -(float(row["profit_factor"]) if row["profit_factor"] != "Infinity" else 1e9),
+        -int(row["double_cost_pnl_vnd"]),
+        str(row["parameter_json"]),
+    ))
+    for rank, row in enumerate(eligible_rows, 1):
+        row["rank"] = rank
+    chosen_row = eligible_rows[0] if eligible_rows else None
+    if chosen_row:
+        chosen = trial14.CaptureConfig(
+            int(chosen_row["ridge_penalty"]),
+            float(chosen_row["minimum_target_probability"]),
+            float(chosen_row["risk_penalty"]),
+            float(chosen_row["score_buffer"]),
+            int(chosen_row["top_k"]),
+        )
+        is_metrics, is_selected, is_fold_rows, _ = results[chosen.key()]
+        (
+            val_predictions,
+            val_train_counts,
+            val_model_rows,
+            val_deployments,
+        ) = prepare_predictions(
+            validation_folds, minute_dir, daily, calendar, dense_features,
+            "internal_validation",
+        )
+        val_controls = {
+            fold.fold_id: control_campaigns(
+                val_deployments[fold.fold_id], calendar
+            )
+            for fold in validation_folds
+        }
+        val_metrics, val_selected, val_fold_rows, _ = (
+            trial14.evaluate_configuration(
+                chosen, validation_folds, val_predictions, val_train_counts,
+                val_controls, calendar, "internal_validation",
+            )
+        )
+        gates = trial14.validation_gates(val_metrics)
+        status = (
+            "passed_internal_validation"
+            if all(gates.values()) else "rejected_internal_validation"
+        )
+    else:
+        chosen = None
+        is_metrics = {}
+        is_selected = []
+        is_fold_rows = []
+        val_metrics = {}
+        val_selected = []
+        val_fold_rows = []
+        val_model_rows = []
+        gates = {}
+        status = "no_in_sample_minute_model"
+    report = {
+        "trial_id": TRIAL_ID,
+        "status": status,
+        "minute_configurations": len(search_rows),
+        "eligible_in_sample_configurations": len(eligible_rows),
+        "selected_configuration": asdict(chosen) if chosen else None,
+        "selected_in_sample_metrics": is_metrics,
+        "internal_validation_metrics": val_metrics,
+        "internal_validation_gates": gates,
+        "advance_to_final_oos": bool(gates) and all(gates.values()),
+        "final_test_used": False,
+        "final_minute_holdout": [
+            FINAL_START.isoformat(), FINAL_END.isoformat()
+        ],
+        "daily_final_range_detected_but_not_parsed": [
+            final_range[0].isoformat(), final_range[1].isoformat()
+        ],
+    }
+    write_csv(output_dir / "minute_optimization.csv", search_rows, SEARCH_FIELDS)
+    write_csv(output_dir / "selected_is_campaigns.csv", is_selected, MINUTE_FIELDS)
+    write_csv(output_dir / "selected_is_folds.csv", is_fold_rows, FOLD_FIELDS)
+    write_csv(output_dir / "is_models.csv", is_model_rows, MODEL_FIELDS)
+    write_csv(
+        output_dir / "validation_campaigns.csv", val_selected, MINUTE_FIELDS
+    )
+    write_csv(output_dir / "validation_folds.csv", val_fold_rows, FOLD_FIELDS)
+    write_csv(output_dir / "validation_models.csv", val_model_rows, MODEL_FIELDS)
+    report_path = output_dir / "development_report.json"
+    report_path.write_text(
+        json.dumps(report, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    if report["advance_to_final_oos"] and chosen:
+        prereg = Path(
+            "research_log/TRIAL15_MINUTE_GRID_CAPTURE_PREREGISTRATION.md"
+        )
+        lock = {
+            "trial_id": TRIAL_ID,
+            "configuration": asdict(chosen),
+            "execution": asdict(EXECUTION),
+            "implementation_sha256": file_sha(Path(__file__)),
+            "trial5_dependency_sha256": file_sha(Path(trial5.__file__)),
+            "trial13_dependency_sha256": file_sha(Path(trial13.__file__)),
+            "trial14_dependency_sha256": file_sha(Path(trial14.__file__)),
+            "preregistration_sha256": file_sha(prereg),
+            "daily_input_sha256": file_sha(daily_path),
+            "assignments_sha256": file_sha(assignment_path),
+            "development_report_sha256": file_sha(report_path),
+            "final_minute_holdout": [
+                FINAL_START.isoformat(), FINAL_END.isoformat()
+            ],
+        }
+        (output_dir / "FINAL_OOS_CONFIG_LOCK.json").write_text(
+            json.dumps(lock, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    return report
+
+
+def run_final_oos(
+    development_dir: Path, output_dir: Path
+) -> dict[str, object]:
+    lock = development_dir / "FINAL_OOS_CONFIG_LOCK.json"
+    if not lock.exists():
+        raise PermissionError(
+            "Final minute OOS remains locked because validation did not pass"
+        )
+    raise NotImplementedError(
+        "Final minute execution requires a passed lock; development has not "
+        "authorized reading the final minute files"
+    )
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--optimize-validate", action="store_true")
+    parser.add_argument("--final-oos", action="store_true")
+    parser.add_argument("--output-dir", type=Path, default=None)
+    args = parser.parse_args()
+    if args.optimize_validate == args.final_oos:
+        raise SystemExit("Choose exactly one mode")
+    if args.optimize_validate:
+        output = args.output_dir or Path(
+            "data/trial15_minute_grid_capture/development"
+        )
+        print(json.dumps(optimize_validate(output), indent=2, sort_keys=True))
+    else:
+        output = args.output_dir or Path(
+            "data/trial15_minute_grid_capture/final"
+        )
+        print(json.dumps(run_final_oos(
+            Path("data/trial15_minute_grid_capture/development"), output
+        ), indent=2, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()

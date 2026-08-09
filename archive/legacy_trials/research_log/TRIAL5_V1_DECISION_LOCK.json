@@ -1,0 +1,28 @@
+{
+  "identity_hashes": {
+    "assignments": "ecf89e6ec8b95d0ad1cc1d09c6b6a1c0b5a35e43531686fd1bc4d82fde8c135f",
+    "config": "e304cef11f44fcee8c153d7a6fe9f04bcd185d88cb77e0e8cbb64ab9d0f5d9d1",
+    "development_daily_rows": "5538a6d21856a488cc5630dd2286ece9b965f34eece40bcfe8203e69d043bdf8",
+    "minute_files_composite": "ad20106de2f17146fb74c991a42a88cf4c3d912c4030879088d9548a6d150fcd",
+    "preregistration": "f3f1dad98d9556d7669fc6ff1364132d8769f95bd665aed85a15500c6aa83edf",
+    "script": "df8ccd26e6d8d7435735deff89f4e472cced416fdb1a12fee79ea007a9b8fe13",
+    "split_audit": "38b1817451897e3ac87155fa7c7ee21d93a5c5ab9b480b2eda7d86ea493175e9"
+  },
+  "manifest_sha256": "2b7239b155b20d3c13547e6c3fd7bd2ceaa8f2c6be7d97a2a3689c5d331a872e",
+  "output_dir": "data/trial5_rotation_grid/trial5_e1f38d5856",
+  "output_hashes": {
+    "account_daily.csv": "2d53c207d576aa344a222dd7b32c7bdec6a8350ed751e6cdb61d9a51440351a4",
+    "fold_summary.csv": "1ddf98dd41591c3bd97bb358ca07f3fb0a1cd9b851dde91cb26c7b2ec2b54e10",
+    "gate_report.json": "141ffc5bee890af35cd2a24effc4f127fc0092ed0b1b28aa4e8534815af8bba6",
+    "grid_parameters.csv": "168389bab88689c08b8f979a28fccf7dfd2ee846f83b041266ed449f7b226a1d",
+    "portfolio_daily.csv": "308dfb70257fe3095bc8b3fbf8659a884fddaac947f73ac44e2e7e9a05a377fe",
+    "quarantined_folds.csv": "819df5d9889d741ba33d9c220f1135536664656371af372615f2bfe2527ec6c4",
+    "selection_audit.csv": "959bf1713791501a1f8140e14e8bc78f53460225e11d57a58f4e4e7668a96ca2",
+    "trades.csv": "c35ffdea71f78f6c83ae82370b74a1108893c7d9da87aead346919c6e71df441"
+  },
+  "result_fingerprint_sha256": "19923d4afb0b134796896eab250a006f52f1a9b54e0d07840a89440e5078f71c",
+  "run_id": "trial5_e1f38d5856",
+  "schema_version": "trial5.v1",
+  "status": "inconclusive_sample",
+  "trial_id": "TRIAL5-HSX-ROTATION-LONG-GRID"
+}

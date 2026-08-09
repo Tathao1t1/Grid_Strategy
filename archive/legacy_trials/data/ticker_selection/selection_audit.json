@@ -1,0 +1,50 @@
+{
+  "input": "data_algotradeDB_split.csv",
+  "leakage_policy": "Only primary_split=development rows were passed to regime calculation, summary, eligibility, score, ranking, and selection.",
+  "test_used_for_selection": false,
+  "training_rows": 8760,
+  "training_start": "2022-01-04",
+  "training_end": "2025-07-11",
+  "test_rows_held_out": 2520,
+  "test_start": "2025-07-14",
+  "test_end": "2026-07-16",
+  "tickers": [
+    "FPT",
+    "HPG",
+    "MBB",
+    "MWG",
+    "PNJ",
+    "SSI",
+    "TCB",
+    "VCB",
+    "VND",
+    "VPB"
+  ],
+  "block_size_sessions": 10,
+  "step_size_sessions": 5,
+  "complete_training_blocks": 174,
+  "unused_training_dates": [
+    "2022-01-04",
+    "2022-01-05",
+    "2022-01-06",
+    "2022-01-07",
+    "2022-01-10",
+    "2022-01-11"
+  ],
+  "parameters": {
+    "er_threshold": 0.35,
+    "min_range_pct": 0.012,
+    "min_oscillating_pct": 0.35,
+    "max_downtrend_pct": 0.25,
+    "deep_downtrend_return": -0.08,
+    "max_deep_downtrend_pct": 0.05,
+    "min_favorable_pct": 0.6,
+    "top_n": 0
+  },
+  "selected_tickers": [
+    "VCB",
+    "FPT",
+    "VPB",
+    "PNJ"
+  ]
+}

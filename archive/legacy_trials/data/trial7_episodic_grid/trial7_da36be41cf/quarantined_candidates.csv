@@ -1,0 +1,5 @@
+trial_id,fold_id,ticker,signal_date,entry_date,reason,reset_dates
+TRIAL7-HSX-CONFIRMED-EPISODIC-GRID,wf_03,PNJ,2023-05-23,2023-05-24,forward_reference_reset,2023-06-09
+TRIAL7-HSX-CONFIRMED-EPISODIC-GRID,wf_09,MBB,2024-05-02,2024-05-03,forward_reference_reset,2024-05-23
+TRIAL7-HSX-CONFIRMED-EPISODIC-GRID,wf_09,VPB,2024-05-03,2024-05-06,forward_reference_reset,2024-05-22
+TRIAL7-HSX-CONFIRMED-EPISODIC-GRID,wf_13,PNJ,2025-01-13,2025-01-14,forward_reference_reset,2025-02-10

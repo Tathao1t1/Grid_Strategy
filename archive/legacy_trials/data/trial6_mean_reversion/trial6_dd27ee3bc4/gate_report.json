@@ -1,0 +1,47 @@
+{
+  "advance_to_minute_stage_b": false,
+  "economic_gates": {
+    "brier_improvement": false,
+    "doubled_cost_profit_factor": false,
+    "positive_active_fold_fraction": false,
+    "positive_after_best_removed": false,
+    "positive_doubled_cost_pnl": false,
+    "positive_median_pnl": false,
+    "positive_total_pnl": false,
+    "probability_ranking": false,
+    "profit_factor": false,
+    "target_gains_cover_non_target_losses": true
+  },
+  "final_test_used": false,
+  "metrics": {
+    "base_brier_score": null,
+    "best_removed_total_pnl_vnd": 0,
+    "brier_score": null,
+    "double_cost_profit_factor": null,
+    "double_cost_total_pnl_vnd": 0,
+    "entry_year_counts": {},
+    "exit_reasons": {},
+    "highest_quintile_target_rate": null,
+    "lowest_quintile_target_rate": null,
+    "median_net_pnl_vnd": null,
+    "non_target_losses_vnd": 0,
+    "oos_candidates": 0,
+    "profit_factor": null,
+    "selected_campaigns": 0,
+    "selected_targets": 0,
+    "target_gains_vnd": 0,
+    "total_net_pnl_vnd": 0,
+    "valid_folds": 0
+  },
+  "sample_gates": {
+    "oos_candidates": false,
+    "selected_campaigns": false,
+    "selected_targets": false,
+    "valid_folds": false,
+    "year_concentration": false,
+    "year_distribution": false
+  },
+  "schema_version": "trial6.v1",
+  "status": "inconclusive_sample",
+  "trial_id": "TRIAL6-HSX-POOLED-MEAN-REVERSION-EDGE"
+}

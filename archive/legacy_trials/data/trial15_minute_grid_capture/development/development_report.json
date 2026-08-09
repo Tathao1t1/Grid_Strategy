@@ -1,0 +1,20 @@
+{
+  "advance_to_final_oos": false,
+  "daily_final_range_detected_but_not_parsed": [
+    "2025-07-14",
+    "2026-07-16"
+  ],
+  "eligible_in_sample_configurations": 0,
+  "final_minute_holdout": [
+    "2025-07-14",
+    "2026-06-30"
+  ],
+  "final_test_used": false,
+  "internal_validation_gates": {},
+  "internal_validation_metrics": {},
+  "minute_configurations": 48,
+  "selected_configuration": null,
+  "selected_in_sample_metrics": {},
+  "status": "no_in_sample_minute_model",
+  "trial_id": "TRIAL15-MINUTE-EXECUTED-GRID-CAPTURE"
+}

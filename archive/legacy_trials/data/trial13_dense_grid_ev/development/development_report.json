@@ -1,0 +1,16 @@
+{
+  "advance_to_final_oos": false,
+  "eligible_in_sample_configurations": 0,
+  "final_test_range_detected_but_not_parsed": [
+    "2025-07-14",
+    "2026-07-16"
+  ],
+  "final_test_used": false,
+  "internal_validation_gates": {},
+  "internal_validation_metrics": {},
+  "model_configurations": 54,
+  "selected_configuration": null,
+  "selected_in_sample_metrics": {},
+  "status": "no_in_sample_model",
+  "trial_id": "TRIAL13-DENSE-CAUSAL-GRID-EV"
+}

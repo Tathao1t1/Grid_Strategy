@@ -1,0 +1,62 @@
+{
+  "artifacts": {
+    "activation_candidates.csv": "058b7d87e32d31cee5278e43ddf40c895eab47949c3e5c5c2f57f0820fee1196",
+    "fold_summary.csv": "ceb5e12b8051fcfbc4241640801b8f3c0374b40ee8a1d31f01101f5c962c34db",
+    "gate_report.json": "1f6beeb600c3c9f41b5a1f7e01a74c7747bfb7cdccb4e6509d0757f4f7ecefc3",
+    "quarantined_candidates.csv": "6ba07bb98915eabb05619d8da0c4bc89fe52f4d1d8751c90cf31cd428bd91346",
+    "selected_episodes.csv": "2c77f5113b0935df312422d75c390fdf0d03a2a2c87e3604f799cc345025f266"
+  },
+  "assignments_sha256": "ecf89e6ec8b95d0ad1cc1d09c6b6a1c0b5a35e43531686fd1bc4d82fde8c135f",
+  "config": {
+    "commission_rate": 0.0015,
+    "cooldown_sessions": 5,
+    "doubled_cost_multiplier": 2.0,
+    "execution_haircut": 0.0005,
+    "hard_lower_steps": 3,
+    "maximum_concurrent_campaigns": 3,
+    "maximum_grid_step": 0.03,
+    "maximum_horizon": 15,
+    "maximum_levels": 2,
+    "maximum_ticker_positive_pnl_fraction": 0.4,
+    "maximum_year_fraction": 0.55,
+    "minimum_candidates": 75,
+    "minimum_episodes_per_year": 5,
+    "minimum_grid_step": 0.015,
+    "minimum_market_return5": -0.05,
+    "minimum_positive_active_fold_fraction": 0.6,
+    "minimum_profit_factor": 1.2,
+    "minimum_residual_rebound": 0.0,
+    "minimum_selected_episodes": 40,
+    "minimum_target_sales": 15,
+    "minimum_valid_folds": 15,
+    "minimum_years": 3,
+    "quantity_per_level": 100,
+    "residual_z_max": -0.75,
+    "sell_tax_rate": 0.001,
+    "settlement_sessions": 2,
+    "universe": [
+      "FPT",
+      "HPG",
+      "MBB",
+      "MWG",
+      "PNJ",
+      "SSI",
+      "TCB",
+      "VCB",
+      "VND",
+      "VPB"
+    ]
+  },
+  "daily_development_sha256": "5fa014c90c729902c1eb9f9fc981aa4004dfb0ec58cc1bbea36c527d0c1f28ca",
+  "final_test_range_detected_but_not_parsed": [
+    "2025-07-14",
+    "2026-07-16"
+  ],
+  "implementation_sha256": "d6446045e96bad8a91b38542660cc66e9a6a538dc804a1c2d8a6f5355148298b",
+  "preregistration_sha256": "2ef7956517d309c67c6f3d9037ef5c7c4f514949f40df38faea9f1f3d158bce9",
+  "run_id": "trial7_da36be41cf",
+  "schema_version": "trial7.v1",
+  "trial5_dependency_sha256": "df8ccd26e6d8d7435735deff89f4e472cced416fdb1a12fee79ea007a9b8fe13",
+  "trial6_dependency_sha256": "96d6199c18143a328e1863fb06ee5d86ad1873b2354a604cbf5eaeefc9414cfe",
+  "trial_id": "TRIAL7-HSX-CONFIRMED-EPISODIC-GRID"
+}

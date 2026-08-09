@@ -1,0 +1,305 @@
+TRIAL 5 IMPLEMENTATION SUMMARY
+==============================
+
+Trial ID
+--------
+TRIAL5-HSX-ROTATION-LONG-GRID
+
+Purpose
+-------
+Trial 5 is not a permanent grid strategy for one stock. It models the full
+commercial process:
+
+    point-in-time ticker selection
+    -> two-month long-grid deployment
+    -> mandatory exit and cash settlement
+    -> reselection
+
+The test repeats this process over many historical rotations. A short live
+deployment therefore still receives multi-year historical validation.
+
+Research universe and capital
+-----------------------------
+Fixed HSX universe:
+
+    FPT HPG MBB MWG PNJ SSI TCB VCB VND VPB
+
+Initial portfolio capital is VND 100,000,000. At most two tickers are selected
+per rotation. At most one ticker is selected from each frozen sector group.
+Unfilled selection slots remain cash.
+
+Walk-forward split
+------------------
+There are 15 chronological, non-overlapping deployment folds.
+
+    Training:    previous 12 calendar months
+    Deployment:  immediately following 2 calendar months
+    First OOS:   2023-01-03 to 2023-02-28
+    Last OOS:    2025-05-05 to 2025-06-30
+
+The nine development sessions from 2025-07-01 to 2025-07-11 are unused.
+The final_test period from 2025-07-14 to 2026-07-16 remains locked and is not
+read numerically, selected on, simulated, or used for tuning.
+
+Ticker selection
+----------------
+Selection is recomputed inside every fold using that fold's training rows
+only. No global hindsight-selected ticker list is allowed.
+
+The training year is divided backward into non-overlapping blocks containing
+10 close-to-close return sessions (11 closing prices). Each block is labelled:
+
+    deep_downtrend       return <= -8%
+    oscillating_sideways ER < 0.35 and high-low range >= 1.2%
+    quiet_sideways       ER < 0.35 and range < 1.2%
+    uptrend              ER >= 0.35 and return > 0
+    downtrend            all remaining valid blocks
+
+A ticker must have at least 20 valid blocks, at least 35% oscillating blocks,
+at most 25% downtrend plus deep-downtrend blocks, at most 5% deep-downtrend
+blocks, and at least 60% oscillating plus uptrend blocks. The latest block
+cannot be downtrend/deep-downtrend, and the latest six blocks cannot contain a
+deep downtrend.
+
+It must also pass:
+
+    median daily traded value over 60 sessions >= VND 10 billion
+    valid reference/corporate-action checks
+    ATR20 / price <= 3%
+    one 100-share lot fits exposure and stress budgets
+
+Eligible names are ranked lexicographically, not with a fitted weighted score:
+least deep-downtrend history, least total downtrend, most oscillation, largest
+oscillating range, greatest liquidity, then alphabetical ticker.
+
+Grid formula
+------------
+The same one-cell geometric formula is used for every selected ticker:
+
+    A = final training close
+    g = clamp(ATR20 / A, 1.5%, 3.0%)
+    buy limit B = A / (1 + g)
+    sell target U = A
+    hard lower H = A / (1 + g)^3
+
+Prices are rounded to modeled HSX legal ticks. There is one position per
+ticker, no descending buy ladder, and no averaging down.
+
+Position size and turnover
+--------------------------
+Quantity is the largest 100-share multiple satisfying:
+
+    acquisition cash <= 15% of rotation-start portfolio NAV
+    loss after three sequential 7% HSX floor moves <= 1.5% of NAV
+
+Each floor move is rounded separately to the applicable HSX tick before the
+next move. With two selected tickers, maximum initial exposure is 30% and
+three-floor portfolio stress is 3%.
+
+Before each buy, planned two-way turnover (buy notional plus target-sale
+notional) is reserved. Each ticker has a hard budget of 60% of rotation-start
+portfolio NAV; two tickers can reserve at most 120% per rotation.
+
+Entry rule
+----------
+An order for session T uses information ending at T-1 only:
+
+    close[T-1] > SMA50[T-1]
+    10-session return > -8%
+    ER10 < 0.35 OR the 10-session return is non-negative
+    close[T-1] > frozen buy limit B
+
+The latest 50 observations must have verifiable reference information and no
+detected reset. The ticker account must be flat at session start.
+
+Minute execution
+----------------
+Only observed continuous-session minute events can fill. Missing clock minutes
+are never created or forward-filled. A normal limit fill requires:
+
+    valid non-crossed level-one book
+    spread <= 40 basis points
+    displayed quantity covers the complete order
+    order <= 5% of that minute's matched quantity
+    best quote reaches the limit
+    minute closing matched price penetrates the limit by one legal tick
+
+The algorithm deliberately does not use intraminute high/low to invent queue
+priority. It uses whole-order fills only and applies a 5-basis-point adverse
+execution haircut subject to the resting limit.
+
+Costs and settlement
+--------------------
+Modeled costs are:
+
+    buy commission       0.15%
+    sell commission      0.15%
+    sell tax             0.10%
+    execution haircut    0.05% per side
+    board lot            100 shares
+
+Exact cash is rounded to whole VND. Purchased shares become tradeable at 13:00
+on the second following observed trading session. Sale cash becomes available
+on the same T+2-afternoon schedule. The ledger separately tracks available
+cash, pending sale cash, total quantity, tradeable quantity, and locked
+quantity.
+
+Risk management
+---------------
+A ticker stops accepting buys when prior-close information shows:
+
+    10-session return <= -8%
+    prior close <= hard lower H
+    account drawdown from its high-water mark >= 5%
+
+A portfolio-level 5% drawdown from the continuous high-water mark permanently
+kills the strategy from the next observed session and persists across all
+later rotations.
+
+Risk exits may ignore the normal spread ceiling, but still require a valid
+displayed bid, full size, and the 5% participation limit. New buys stop early
+enough to settle. Scheduled liquidation begins on the third-last session.
+All shares and sale cash must be settled by the final session; the simulator
+never invents an end-of-period fill.
+
+Diagnostics
+-----------
+The run reports:
+
+    net return after commission, tax, and execution friction
+    stitched maximum drawdown
+    profitable-rotation percentage
+    worst two-month return
+    completed grid cycles
+    realized-trade profit factor
+    capital utilization
+    losses realized after risk triggers while shares were settlement-locked
+    performance in equal-weight ten-stock market-downtrend rotations
+    buy-and-hold benchmark
+    doubled commission and execution-haircut robustness
+
+The down-market label is diagnostic only. A rotation is a broad-market
+downtrend when the equal-weight ten-stock proxy loses at least 5% from the
+training-end close to the deployment-end close. It never changes trades.
+
+Decision rules
+--------------
+Sample sufficiency requires:
+
+    all 15 rotations valid
+    at least 10 active rotations
+    at least 30 completed target campaigns
+
+Only then are economic gates considered. They require positive compounded and
+median returns, annualized two-month Sharpe >= 0.50, at least 60% profitable
+rotations, trade profit factor >= 1.20, maximum drawdown no worse than -5%,
+worst rotation no worse than -8%, positive doubled-cost performance,
+doubled-cost profit factor >= 1.00, controlled forced-exit losses, modeled
+cost <= 1% of starting NAV in every rotation, and modeled cost <= 35% of
+positive pre-cost campaign profit.
+
+Bias and leakage controls
+-------------------------
+The implementation:
+
+    fixes the ten-name universe and discloses survivorship limitations
+    recomputes selection only inside past training data
+    freezes selected names and grid parameters for the next two months
+    keeps cash/no-trade rotations in the denominator
+    uses non-overlapping OOS rotations as the research sample
+    filters minute rows by selected ticker and allowed date before parsing
+    ignores the legacy validation_fold column
+    excludes locked final-test numeric bytes from the development run identity
+    requires a pre-run cryptographic seal before any authoritative simulation
+    creates content-addressed outputs and a create-only decision lock
+
+Files
+-----
+Main implementation:
+
+    study_trial5_rotation_grid.py
+
+Tests:
+
+    tests/test_trial5_rotation_grid.py
+
+Frozen research specification:
+
+    research_log/TRIAL5_ROTATION_GRID_PREREGISTRATION.md
+
+Walk-forward assignments:
+
+    data/trial5_splits_rotation/
+
+Reproducible development command
+--------------------------------
+From the project directory:
+
+    python3 study_trial5_rotation_grid.py --development-walk-forward
+
+The command has no final-test execution mode. The authoritative run is allowed
+only after the source, configuration, preregistration, split files, canonical
+development rows, and required minute files/manifests match the pre-run seal.
+
+Interpretation
+--------------
+Fifteen two-month portfolio rotations are the statistical sample. Individual
+ticker rows and trades are correlated diagnostics and must not be counted as
+independent observations. Passing development would permit one separately
+controlled final confirmation; it would not by itself authorize live trading.
+
+Authoritative Trial 5 v1 result
+-------------------------------
+Run:
+
+    trial5_e1f38d5856
+
+Status:
+
+    inconclusive_sample
+    do not advance to final confirmation
+    final_test used: no
+
+The development run produced 14 valid rotations out of 15, only 6 active
+rotations, and only 4 completed grid-target campaigns. The preregistered
+requirements were 15 valid, at least 10 active, and at least 30 completed
+campaigns.
+
+Key observed diagnostics:
+
+    compounded net return                 -1.4080%
+    annualized two-month-fold Sharpe      -0.9745
+    profitable valid rotations             14.29%
+    realized-trade profit factor           0.2876
+    stitched maximum drawdown              -1.7490%
+    worst valid rotation                   -0.7651%
+    doubled-cost compounded return         -1.5844%
+    average capital utilization             0.955%
+    diagnostic benchmark return            +1.5931%
+
+Four target exits earned VND 568,359, while five forced/scheduled exits lost
+VND 1,976,316. Modeled costs were VND 372,957 and consumed 50.74% of positive
+pre-cost campaign profit. No realized loss was tagged to a risk trigger while
+shares were settlement-locked.
+
+The invalid rotation contained unadjusted reference resets in TCB and HPG.
+Five rotations selected no ticker. In three more rotations, selected tickers
+never reached the frozen qualifying buy level. When entries did occur, the
+first-touch pullback rule often entered a continuing breakdown. The largest
+example was an HPG gap that lost about 13.8% at campaign level despite the
+prior-close hard-lower rule.
+
+Conclusion:
+
+    The rotation/accounting procedure worked.
+    The static first-touch entry and payoff hypothesis did not.
+    Trial 5 v1 is sealed and must not be repaired in place.
+    Any revised entry, selector, or risk rule must be Trial 6.
+
+Full result record:
+
+    research_log/TRIAL5_ROTATION_GRID_RESULT.md
+
+Authoritative output:
+
+    data/trial5_rotation_grid/trial5_e1f38d5856/

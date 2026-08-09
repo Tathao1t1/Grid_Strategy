@@ -1,0 +1,40 @@
+{
+  "period": "2022_11",
+  "status": "complete",
+  "start_inclusive": "2022-11-01",
+  "end_exclusive": "2022-12-01",
+  "requested_tickers": [
+    "FPT",
+    "VCB",
+    "HPG",
+    "MWG",
+    "TCB",
+    "MBB",
+    "VPB",
+    "SSI",
+    "VND",
+    "PNJ"
+  ],
+  "rows": 44799,
+  "matched_quantity_sum": 1172846600,
+  "tickers_found": [
+    "FPT",
+    "HPG",
+    "MBB",
+    "MWG",
+    "PNJ",
+    "SSI",
+    "TCB",
+    "VCB",
+    "VND",
+    "VPB"
+  ],
+  "first_minute": "2022-11-01T09:15:00",
+  "last_minute": "2022-11-30T14:29:00",
+  "duplicate_keys": 0,
+  "missing_ohlc_rows": 0,
+  "invalid_ohlc_rows": 0,
+  "invalid_quantity_rows": 0,
+  "file": "data/minute_bars/minute_bars_2022_11.csv.gz",
+  "missing_tickers": []
+}

@@ -1,0 +1,113 @@
+{
+  "advance_to_execution_backtest": false,
+  "barrier_counts": {
+    "target_first": 4
+  },
+  "gates": {
+    "doubled_cost_mean_t5": {
+      "passed": false,
+      "requirement": "> 0.0000",
+      "value": -0.005161092486876684
+    },
+    "doubled_cost_profit_factor_t5": {
+      "passed": false,
+      "requirement": "> 1.00",
+      "value": 0.3378769267345564
+    },
+    "fold_stability": {
+      "passed": false,
+      "requirement": ">= 0.70 positive among folds with >= 5 events",
+      "value": {
+        "evaluable_folds": 0,
+        "positive_folds": 0,
+        "positive_fraction": null
+      }
+    },
+    "locked_mae_p10": {
+      "passed": true,
+      "requirement": ">= -0.05",
+      "value": -0.011221464493535914
+    },
+    "mean_net_return_t5": {
+      "passed": false,
+      "requirement": ">= 0.0050",
+      "value": -0.0011717185189958623
+    },
+    "median_net_return_t5": {
+      "passed": false,
+      "requirement": "> 0.0000",
+      "value": -0.002765465489580121
+    },
+    "net_profit_factor_t5": {
+      "passed": false,
+      "requirement": ">= 1.25",
+      "value": 0.8302998898892415
+    },
+    "net_win_rate_t5": {
+      "passed": false,
+      "requirement": ">= 0.55",
+      "value": 0.5
+    },
+    "sample_event_count": {
+      "passed": false,
+      "requirement": ">= 30",
+      "value": 4
+    },
+    "sample_year_coverage": {
+      "passed": false,
+      "requirement": ">= 3 years with >= 5 events",
+      "value": {
+        "year_counts": {
+          "2022": 1,
+          "2023": 1,
+          "2024": 2
+        },
+        "years_with_at_least_five": 0
+      }
+    }
+  },
+  "horizon_statistics": {
+    "t10": {
+      "doubled_cost_mean_net_return": 0.02620356673042154,
+      "doubled_cost_profit_factor": 10.563892496752922,
+      "events": 4,
+      "mean_gross_return": 0.03548581004758117,
+      "mean_net_return": 0.03031871518706425,
+      "median_mae": -0.009288395378313719,
+      "median_mfe": 0.04594724644135517,
+      "median_net_return": 0.027776518791226,
+      "net_profit_factor": 18.063265622577145,
+      "net_win_rate": 0.75
+    },
+    "t3": {
+      "doubled_cost_mean_net_return": 0.0007502914340422329,
+      "doubled_cost_profit_factor": 1.4109236120056678,
+      "events": 4,
+      "mean_gross_return": 0.0098023041203803,
+      "mean_net_return": 0.004763370467084915,
+      "median_mae": -0.006531608733062355,
+      "median_mfe": 0.01919649523369127,
+      "median_net_return": 0.0043057120682984396,
+      "net_profit_factor": 5.250306748466258,
+      "net_win_rate": 0.75
+    },
+    "t5": {
+      "doubled_cost_mean_net_return": -0.005161092486876684,
+      "doubled_cost_profit_factor": 0.3378769267345564,
+      "events": 4,
+      "mean_gross_return": 0.003837450395151598,
+      "mean_net_return": -0.0011717185189958623,
+      "median_mae": -0.008372099530608412,
+      "median_mfe": 0.01919649523369127,
+      "median_net_return": -0.002765465489580121,
+      "net_profit_factor": 0.8302998898892415,
+      "net_win_rate": 0.5
+    }
+  },
+  "locked_mae_p10": -0.011221464493535914,
+  "primary_events": 4,
+  "primary_horizon": "T+5",
+  "scope": "pooled_all_in_sample_folds",
+  "status": "inconclusive_sample",
+  "trial_id": "TRIAL3-VCB-CONFIRMED-PULLBACK"
+}

@@ -1,0 +1,69 @@
+{
+  "advance_to_final_oos": false,
+  "best_observed_configuration": {
+    "eligible_to_advance": true,
+    "minimum_net_profit_fraction": 0.01,
+    "name": "equilibrium_net_100"
+  },
+  "best_observed_in_sample_metrics": {
+    "active_folds": 8,
+    "annualized_fold_sharpe": -3.6875237503033644,
+    "best_removed_pnl_vnd": -4573340,
+    "double_cost_pnl_vnd": -5263975,
+    "economic_target_adjustment_rate": 0.32038834951456313,
+    "entry_years": 2,
+    "equilibrium_cap_fraction": 0.1,
+    "grid_economic_pnl_vnd": -4728173,
+    "maximum_ticker_positive_fraction": 0.2832507011740614,
+    "maximum_year_fraction": 0.5625,
+    "mean_target_gross_distance": 0.018109425338915217,
+    "median_equilibrium_beta": 0.918129009528093,
+    "median_equilibrium_residual_ar1": 0.8916165624196979,
+    "median_pnl_vnd": -54204.5,
+    "other_losses_vnd": 6347578,
+    "positive_active_fold_fraction": 0.0,
+    "profit_factor": 0.29967043984864694,
+    "realized_maximum_drawdown_fraction": 0.04254549,
+    "realized_maximum_drawdown_vnd": 4254549,
+    "selected_campaigns": 80,
+    "selected_pnl_vnd": -4254549,
+    "selected_targets": 29,
+    "target_gains_vnd": 1619405,
+    "target_rate_quintile_spread": 0.2692307692307693,
+    "valid_folds": 9,
+    "worst_pnl_vnd": -475781
+  },
+  "daily_final_range_detected_but_not_parsed": [
+    "2025-07-14",
+    "2026-07-16"
+  ],
+  "drawdown_definition": "realized closed-campaign equity; not minute mark-to-market",
+  "eligible_in_sample_variants": 0,
+  "excluded_tickers": [
+    "FPT",
+    "PNJ"
+  ],
+  "execution_universe": [
+    "HPG",
+    "MBB",
+    "MWG",
+    "SSI",
+    "TCB",
+    "VCB",
+    "VND",
+    "VPB"
+  ],
+  "exploratory_post_trial17_repair": true,
+  "final_minute_holdout": [
+    "2025-07-14",
+    "2026-06-30"
+  ],
+  "final_test_used": false,
+  "internal_validation_gates": {},
+  "internal_validation_metrics": {},
+  "selected_configuration": null,
+  "selected_in_sample_metrics": {},
+  "status": "no_in_sample_market_equilibrium_variant",
+  "target_variants": 4,
+  "trial_id": "TRIAL18-MARKET-EQUILIBRIUM-ECONOMIC-TARGET"
+}

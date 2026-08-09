@@ -1,0 +1,49 @@
+{
+  "input": "data_algotradeDB_split.csv",
+  "tickers": [
+    "VCB"
+  ],
+  "policy": {
+    "train_months": 12,
+    "oos_months": 2,
+    "window_type": "rolling",
+    "oos_windows_overlap": false,
+    "split_by": "global trading date"
+  },
+  "walk_forward": {
+    "fold_count": 15,
+    "first_oos_start": "2023-01-03",
+    "last_oos_end": "2025-06-30",
+    "total_unique_oos_sessions": 618,
+    "unused_development_tail": [
+      "2025-07-01",
+      "2025-07-02",
+      "2025-07-03",
+      "2025-07-04",
+      "2025-07-07",
+      "2025-07-08",
+      "2025-07-09",
+      "2025-07-10",
+      "2025-07-11"
+    ]
+  },
+  "final_parameter_training": {
+    "start": "2024-07-15",
+    "end": "2025-07-11",
+    "sessions": 248,
+    "purpose": "After the rules are frozen using walk-forward results, fit the final parameter set here without reading final_test."
+  },
+  "final_holdout": {
+    "start": "2025-07-14",
+    "end": "2026-07-16",
+    "sessions": 252,
+    "status": "LOCKED_DO_NOT_TUNE"
+  },
+  "leakage_guards": [
+    "Every OOS period occurs strictly after its training period.",
+    "OOS validation periods are non-overlapping.",
+    "The existing final_test period is excluded from every fold.",
+    "All tickers use the same global trading-date boundaries."
+  ],
+  "selection_scope_note": "VCB is a fixed prototype ticker. Earlier walk-forward folds test grid-parameter robustness, not point-in-time ticker selection. The final holdout remains valid because the ticker choice used development data only."
+}

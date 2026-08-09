@@ -1,0 +1,19 @@
+{
+  "eligible_in_sample_configurations": 0,
+  "final_test_range_detected_but_not_parsed": [
+    "2025-07-14",
+    "2026-07-16"
+  ],
+  "final_test_used": false,
+  "internal_validation": {
+    "advance_to_final_oos": false,
+    "gates": {},
+    "metrics": {},
+    "status": "no_in_sample_configuration"
+  },
+  "search_configurations": 216,
+  "selected_in_sample_metrics": null,
+  "selected_parameters": null,
+  "status": "no_in_sample_configuration",
+  "trial_id": "TRIAL11-TREND-CONDITIONED-PULLBACK-GRID"
+}

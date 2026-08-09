@@ -1,0 +1,32 @@
+{
+  "created_at": "2026-07-24T11:48:18+07:00",
+  "fold_ids": [
+    "wf_01",
+    "wf_02",
+    "wf_03",
+    "wf_04",
+    "wf_05",
+    "wf_06",
+    "wf_07",
+    "wf_08",
+    "wf_09",
+    "wf_10",
+    "wf_11",
+    "wf_12",
+    "wf_13",
+    "wf_14",
+    "wf_15"
+  ],
+  "identity_hashes": {
+    "assignments": "ecf89e6ec8b95d0ad1cc1d09c6b6a1c0b5a35e43531686fd1bc4d82fde8c135f",
+    "config": "e304cef11f44fcee8c153d7a6fe9f04bcd185d88cb77e0e8cbb64ab9d0f5d9d1",
+    "development_daily_rows": "5538a6d21856a488cc5630dd2286ece9b965f34eece40bcfe8203e69d043bdf8",
+    "minute_files_composite": "ad20106de2f17146fb74c991a42a88cf4c3d912c4030879088d9548a6d150fcd",
+    "preregistration": "f3f1dad98d9556d7669fc6ff1364132d8769f95bd665aed85a15500c6aa83edf",
+    "script": "df8ccd26e6d8d7435735deff89f4e472cced416fdb1a12fee79ea007a9b8fe13",
+    "split_audit": "38b1817451897e3ac87155fa7c7ee21d93a5c5ab9b480b2eda7d86ea493175e9"
+  },
+  "note": "Created before the first authoritative Trial 5 deployment simulation.",
+  "schema_version": "trial5.v1",
+  "trial_id": "TRIAL5-HSX-ROTATION-LONG-GRID"
+}

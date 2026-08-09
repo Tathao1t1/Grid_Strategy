@@ -1,0 +1,22 @@
+{
+  "period": "2026_07",
+  "status": "complete",
+  "start_inclusive": "2026-07-15",
+  "end_exclusive": "2026-07-16",
+  "requested_tickers": [
+    "FPT"
+  ],
+  "rows": 225,
+  "matched_quantity_sum": 6845900,
+  "tickers_found": [
+    "FPT"
+  ],
+  "first_minute": "2026-07-15T09:15:00",
+  "last_minute": "2026-07-15T14:29:00",
+  "duplicate_keys": 0,
+  "missing_ohlc_rows": 0,
+  "invalid_ohlc_rows": 0,
+  "invalid_quantity_rows": 0,
+  "file": "data/pilot/minute_bars_2026_07.csv.gz",
+  "missing_tickers": []
+}

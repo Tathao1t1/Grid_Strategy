@@ -1,0 +1,3 @@
+trial_id,fold_id,tickersymbol,trading_date,reason
+TRIAL5-HSX-ROTATION-LONG-GRID,wf_09,TCB,,corporate_action_reference_reset
+TRIAL5-HSX-ROTATION-LONG-GRID,wf_09,HPG,,corporate_action_reference_reset
