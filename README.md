@@ -180,7 +180,7 @@ then constrained to a minimum of 0.8% and a maximum of 2.5%.
 
 The frozen optimized grid uses:
 
-- four geometric levels;
+- four arithmetic levels;
 - three independent 100-share cells per level;
 - at most two selected stocks;
 - up to 45% capital allocation per selected ticker;
@@ -194,12 +194,13 @@ The strategy uses four equally spaced, cost-aware grid levels.
 
 The grid step is:
 
-`grid_step = round_up_to_tick(max(0.75 * ATR_14, 3.0 * round_trip_cost))`
+`grid_step = round_up_to_tick(max(0.75 * ATR_14, 3.0 * round_trip_cost, one valid price tick))`
 
 Where:
 
 - `ATR_14` is calculated from completed five-minute bars.
 - `round_trip_cost` includes buy commission, sell commission, selling tax, and one spread tick.
+- one_valid_price_tick: prevents an invalid or excessively small price interval.
 
 
 The reference price is the median of the last 20 completed five-minute closes.
@@ -215,7 +216,7 @@ Every price is rounded to a valid exchange tick. Each level contains three indep
 
 The equivalent percentage spacing is:
 
-`grid_spacing_percentage = grid_step / reference_price`
+
 
 The percentage is dynamic because it changes with volatility, transaction costs, the reference price, and the valid tick size.
 
