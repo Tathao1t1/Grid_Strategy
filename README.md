@@ -141,7 +141,7 @@ Stocks that fail the data-quality, liquidity, trend, or tail-risk gates are excl
 | Optimization | 2024-01-02–2024-12-31 | 250 | Select grid parameters |
 | Internal validation | 2025-01-02–2025-06-30 | 119 | Evaluate the selected configuration once for robustness and identify whether it is suitable for final testing |
 | Exclusion buffer | 2025-07-01–2025-07-11 | 9 | Settlement/data separation |
-| Locked final holdout | 2025-07-14–2026-07-16 | 252 | Not opened |
+| Locked final OOS | 2025-07-14–2026-07-16 | 252 | Not opened |
 
 The January–June 2025 block was opened after the development gate had failed.
 It is therefore labelled **diagnostic OOS**, not performance confirmation.
