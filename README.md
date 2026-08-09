@@ -28,8 +28,8 @@ reversals, liquidity and acceptable downside conditions.
 | Selector development | 2022-01-04 to 2022-12-30 | 249 | Choose the selector horizon only |
 | In-sample backtest | 2023-01-03 to 2023-12-29 | 249 | Test the initial trading rules |
 | Optimization | 2024-01-02 to 2024-12-31 | 250 | Choose grid parameters |
-| Internal diagnostic OOS | 2025-01-02 to 2025-06-30 | 119 | Diagnose the frozen strategy once |
-| Exclusion buffer | 2025-07-01 to 2025-07-11 | 9 | Separate and settle the two OOS blocks |
+| Validation | 2025-01-02 to 2025-06-30 | 119 | Evaluate the selected configuration once for robustness and idenity suitability for final testing |
+| Exclusion buffer | 2025-07-01 to 2025-07-11 | 9 | Data seperation |
 | Final OOS | 2025-07-14 to 2026-07-16 | 252 | One-time final evaluation |
 
 The split is strictly chronological and non-overlapping. For every monthly
