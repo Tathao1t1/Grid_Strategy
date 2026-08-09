@@ -3,14 +3,6 @@
 This repository tests a long-only grid strategy on Vietnamese stock market. It uses daily data for causal selection and
 grid construction, then minute bid/ask and matched-trade data for execution.
 
-The final out-of-sample (OOS) test has now been opened once. It covers exactly
-252 sessions from **2025-07-14 through 2026-07-16**. The frozen strategy lost
-**VND 5,655,588 (-0.566%)**, while the gross equal-weight six-stock proxy
-returned **+8.003%**.
-
-The development gate had already failed in 2024. The final result is therefore
-a diagnostic evaluation of a rejected model, not evidence that the model was
-validated.
 
 ## Research hypothesis
 
@@ -56,8 +48,7 @@ ranks eligible stocks equally on:
 
 Liquidity, spread, drawdown, recent-return and reversal-event checks are hard
 eligibility gates. The selector chooses at most two stocks at each monthly
-cutoff and freezes them for the following deployment month. A broad-market
-veto may leave the strategy entirely in cash.
+cutoff and freezes them for the following deployment month. A broad market decline condition may leave the strategy entirely in cash.
 
 ## Exact grid construction
 
@@ -83,7 +74,7 @@ true_range_t = max(
 )
 ```
 
-The daily volatility estimate and frozen grid spacing are:
+The daily volatility estimate and grid spacing are:
 
 ```text
 ATR20_percentage = average(true_range_t / close_(t-1))
@@ -106,8 +97,8 @@ spacing. Costs affect ticker eligibility and realized execution separately.
 For grid level `k = 1, 2, 3, 4`:
 
 ```text
-buy_level_k  = round_buy_to_HSX_tick(R / (1 + grid_spacing)^k)
-sell_target_k = round_sell_to_HSX_tick(R / (1 + grid_spacing)^(k - 1))
+buy_level_k  = round_buy_to_HSX_tick(R / (1 + grid_spacing)^k) to detemince the price at which level k buys
+sell_target_k = round_sell_to_HSX_tick(R / (1 + grid_spacing)^(k - 1)) determinces the price at which inventory bought at level k is sold.
 ```
 
 Thus, level 1 buys below `R` and targets `R`; level 2 buys below level 1 and
