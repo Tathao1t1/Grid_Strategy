@@ -22,6 +22,13 @@ short-horizon reversal opportunities during the next month.
 A negative price deviation alone is not treated as proof of reversal. The
 selector first requires recent oscillation, adequate amplitude, observed
 reversals, liquidity and acceptable downside conditions.
+### Data source
+
+- **Source:** Algotrade database
+- **Daily data:** OHLC, ceiling, floor and matched volume
+- **Minute data:** matched prices, level-one bid/ask, displayed depth and
+  matched quantity
+- **Length**: 2022-01-01 to 2026-07-16
 
 ## Chronological protocol
 
@@ -53,13 +60,9 @@ eligibility gates. The selector chooses at most two stocks at each monthly
 cutoff and freezes them for the following deployment month. A broad-market
 veto may leave the strategy entirely in cash.
 
-The grouping logic remains part of the frozen implementation, so removing it
-from the code would change the tested strategy. This README documents only the
-selection behavior needed to reproduce the grid.
-
 ## Exact grid construction
 
-This implementation uses a **geometric grid**, not an arithmetic grid.
+This implementation uses a **geometric grid**
 Consecutive levels are separated by approximately the same percentage rather
 than the same VND amount.
 
