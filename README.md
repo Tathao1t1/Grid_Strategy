@@ -342,26 +342,7 @@ python3 sector_rotation_grid.py oos \
 The output now exists, so the implementation refuses to rerun this command.
 The final holdout remains filtered before numeric values are parsed.
 
-## Selector Development
 
-### Horizon experiment
-
-The 10-session window used in earlier research was not retained
-automatically. Three economically interpretable horizons were compared using
-the reserved 2022 selector-development block.
-
-| Horizon | Active rotations | Tickers evaluated | Median future quality | Positive fraction |
-|---:|---:|---:|---:|---:|
-| 20 sessions | 7 | 14 | 3.458% | 71.4% |
-| 40 sessions | 4 | 8 | −1.857% | 50.0% |
-| 60 sessions | 1 | 2 | −0.472% | 50.0% |
-
-The frozen selector horizon was **20 sessions**.
-
-The broad-market veto was excluded only from the horizon-comparison
-calculation because the 2022 veto otherwise left too few observations.
-Future downside still penalized selector quality. The veto remained active
-in every trading backtest.
 
 ## In-Sample Backtesting
 
