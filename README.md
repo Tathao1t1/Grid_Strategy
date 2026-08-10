@@ -282,7 +282,7 @@ The stocks selected in active final-OOS deployments were:
 | February 2026 | SSI, VCB |
 | March 2026 | SAB, VNM |
 | April-May 2026 | None — market veto |
-| June 2026 | STB, VRE |
+| June 2026 | STB |
 | July 2026 | VJC, SSI |
 
 Selection does not imply that an order filled; some selected monthly campaigns
